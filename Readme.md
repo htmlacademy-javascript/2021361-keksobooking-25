@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг»
 
-* Студент: [Денис Перцев](https://up.htmlacademy.ru/javascript/25/user/2021361).
-* Наставник: `Неизвестно`.
+- Студент: [Денис Перцев](https://up.htmlacademy.ru/javascript/25/user/2021361).
+- Наставник: [Максим Волков](https://htmlacademy.ru/profile/id1508839).
 
 ---
 
