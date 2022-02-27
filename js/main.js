@@ -46,14 +46,10 @@ function getRandomFloat(min, max, precision) {
       'нарушены условия: min, precision > 0, max > min, precision - целое число'
     );
   }
-  const result = roundTo(min + Math.random() * (max - min), precision);
-  return result > max ? max : result;
-}
-
-function roundTo(value, precision) {
+  let result = min + Math.random() * (max - min);
   const scalar = 10 ** precision;
-  const result = Math.round(value * scalar) / scalar;
-  return result;
+  result = Math.round(result * scalar) / scalar;
+  return result > max ? max : result;
 }
 
 getRandomFloat(0.15, 0.19, 2);
