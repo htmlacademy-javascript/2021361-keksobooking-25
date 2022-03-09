@@ -50,7 +50,7 @@ function getOffer(location) {
  * @param {} value       - элемент массива, не используется
  * @param {number} index - индекс элемента массива, используетмя для получения адреса изображения
  */
-const createDemoObject = (value, index) => {
+export const createDemoObject = (value, index) => {
   const location = getLocation();
   return {
     author: getAuthor(index),
@@ -58,5 +58,3 @@ const createDemoObject = (value, index) => {
     offer: getOffer(location),
   };
 };
-
-export { createDemoObject };

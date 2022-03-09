@@ -4,7 +4,7 @@
  * @param {number} max - второе положительное число, больше первого
  * @param {boolean} includesMax - если true, результат может включать значение 'max'
  */
-function getRandomInteger(min, max, includesMax = false) {
+export function getRandomInteger(min, max, includesMax = false) {
   if (!Number.isInteger(min) || !Number.isInteger(max)) {
     throw new Error('один из параметров не является целым числом');
   }
@@ -28,7 +28,7 @@ function getRandomInteger(min, max, includesMax = false) {
  * @param {number} max        - второе положительное число, больше первого
  * @param {number} precision  - количество знаков после запятой, целое число >= 1
  */
-function getRandomFloat(min, max, precision) {
+export function getRandomFloat(min, max, precision) {
   if (
     typeof min !== 'number' ||
     typeof max !== 'number' ||
@@ -49,5 +49,3 @@ function getRandomFloat(min, max, precision) {
   result = Math.round(result * scalar) / scalar;
   return result > max ? max : result;
 }
-
-export { getRandomInteger, getRandomFloat };
