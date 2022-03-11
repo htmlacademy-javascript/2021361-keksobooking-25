@@ -17,7 +17,6 @@ const PHOTOS = [
 ];
 
 function getAuthor(index) {
-  index++;
   const fileName = index < 10 ? `0${index}` : index;
   return { avatar: `img/avatars/user${fileName}.png` };
 }
@@ -29,9 +28,9 @@ function getLocation() {
   };
 }
 
-function getOffer(location) {
+function getOffer(location, index) {
   return {
-    title: 'заголовок предложения',
+    title: `Предложение № ${index}`,
     address: `${location.lat}, ${location.lng}`,
     price: getRandomInteger(10000, 100000),
     type: OBJECTS_TYPES[getRandomInteger(0, 4, true)],
@@ -50,13 +49,11 @@ function getOffer(location) {
  * @param {} value       - элемент массива, не используется
  * @param {number} index - индекс элемента массива, используетмя для получения адреса изображения
  */
-const createDemoObject = (value, index) => {
+export const createDemoObject = (value, index) => {
   const location = getLocation();
   return {
-    author: getAuthor(index),
+    author: getAuthor(index++),
     location: location,
-    offer: getOffer(location),
+    offer: getOffer(location, index++),
   };
 };
-
-export { createDemoObject };
