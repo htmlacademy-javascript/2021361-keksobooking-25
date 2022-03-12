@@ -1,5 +1,3 @@
-const globalForms = [...document.forms];
-
 /**
  * @callback NodeSwitcher
  * @param {HTMLElement} node элемент, который переключить
