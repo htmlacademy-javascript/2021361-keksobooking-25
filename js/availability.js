@@ -1,6 +1,4 @@
-const forms = [];
-forms.push(document.querySelector('.ad-form'));
-forms.push(document.querySelector('.map__filters'));
+const forms = [...document.forms];
 
 /**
  * @callback NodeSwitcher
