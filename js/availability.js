@@ -2,6 +2,11 @@ const forms = [];
 forms.push(document.querySelector('.ad-form'));
 forms.push(document.querySelector('.map__filters'));
 
+/**
+ * 
+ * @param {HTMLFormElement} node форма которую переключить
+ * @param {boolean} off флаг в какое состояние переключить
+ */
 const switchChildren = (node, off) => {
   for (const child of node.children) {
     if (off) {
