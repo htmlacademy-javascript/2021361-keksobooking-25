@@ -8,7 +8,7 @@ forms.push(document.querySelector('.map__filters'));
  * @param {boolean} off флаг в какое состояние переключить
  */
 const switchChildren = (node, off) => {
-  for (const child of node.children) {
+  for (const child of node.elements) {
     if (off) {
       child.setAttribute('disabled', 'disabled');
     } else {
