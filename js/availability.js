@@ -32,8 +32,12 @@ export const disableForms = (forms) => {
   });
 };
 
-export const enableForms = () => {
-  globalForms.forEach((form) => {
+/**
+ *
+ * @param {HTMLFormElement[]} forms список форм которые разморозить
+ */
+export const enableForms = (forms= globalForms) => {
+  forms.forEach((form) => {
     form.classList.remove('ad-form--disabled');
     switchChildren(form, makeSwitcher('removeAttribute'));
   });
