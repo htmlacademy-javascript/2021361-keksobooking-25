@@ -35,7 +35,7 @@ const switchChildren = (node, off) => {
 export const disableForms = () => {
   forms.forEach((form) => {
     form.classList.add('ad-form--disabled');
-    switchChildren(form, true);
+    switchChildren(form, true);//функции с параметром типа boolean - анти-паттерн
   });
 };
 
