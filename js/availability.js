@@ -18,10 +18,10 @@ const setOrRemove = (off)=>off?'setAttribute':'removeAttribute';
  */
 /**
  *
- * @param {boolean} off флаг в какое состояние переключить
+ * @param { 'setAttribute' | 'removeAttribute' } methodName флаг в какое состояние переключить
  * @returns {NodeSwitcher}
  */
-const makeSwitcher = (off) => (node) => node[setOrRemove(off)]('disabled', 'disabled');
+const makeSwitcher = (methodName) => (node) => node[methodName]('disabled', 'disabled');
 
 /**
  *
@@ -35,14 +35,14 @@ const switchChildren = (node, switcher) => {
 export const disableForms = () => {
   forms.forEach((form) => {
     form.classList.add('ad-form--disabled');
-    switchChildren(form, makeSwitcher(true));//все еще анти-паттерн
+    switchChildren(form, makeSwitcher('setAttribute'));//уже лучше
   });
 };
 
 export const enableForms = () => {
   forms.forEach((form) => {
     form.classList.remove('ad-form--disabled');
-    switchChildren(form, makeSwitcher(false));
+    switchChildren(form, makeSwitcher('removeAttribute'));
   });
 };
 
