@@ -3,15 +3,6 @@ forms.push(document.querySelector('.ad-form'));
 forms.push(document.querySelector('.map__filters'));
 
 /**
- *
- * @param {boolean} off флаг для выбора метода
- * @returns {
-   'setAttribute' | 'removeAttribute'
- }
- */
-const setOrRemove = (off)=>off?'setAttribute':'removeAttribute';
-
-/**
  * @callback NodeSwitcher
  * @param {HTMLElement} node элемент, который переключить
  * @returns {void}
