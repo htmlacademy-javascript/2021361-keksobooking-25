@@ -12,14 +12,24 @@ forms.push(document.querySelector('.map__filters'));
 const setOrRemove = (off)=>off?'setAttribute':'removeAttribute';
 
 /**
+ * @callback NodeSwitcher
+ * @param {HTMLElement} node элемент, который переключить
+ * @returns {void}
+ */
+/**
+ *
+ * @param {boolean} off флаг в какое состояние переключить
+ * @returns {NodeSwitcher}
+ */
+const makeSwitcher = (off) => (node) => node[setOrRemove(off)]('disabled', 'disabled');
+
+/**
  *
  * @param {HTMLFormElement} node форма которую переключить
  * @param {boolean} off флаг в какое состояние переключить
  */
 const switchChildren = (node, off) => {
-  for (const child of node.elements) {
-    child[setOrRemove(off)]('disabled', 'disabled');
-  }
+  [...node.elements].forEach(makeSwitcher(off));
 };
 
 export const disableForms = () => {
