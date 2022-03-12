@@ -18,11 +18,7 @@ const setOrRemove = (off)=>off?'setAttribute':'removeAttribute';
  */
 const switchChildren = (node, off) => {
   for (const child of node.elements) {
-    if (off) {
-      child.setAttribute('disabled', 'disabled');
-    } else {
-      child.removeAttribute('disabled', 'disabled');
-    }
+    child[setOrRemove(off)]('disabled', 'disabled');
   }
 };
 
