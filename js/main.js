@@ -6,4 +6,4 @@ const globalForms = [...document.forms];
 const demoObjects = Array.from({ length: 10 }, createDemoObject);
 renderDemoObjects(demoObjects);
 disableForms(globalForms);
-enableForms(globalForms);
+setTimeout(() => enableForms(globalForms), 1500);

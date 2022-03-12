@@ -26,7 +26,7 @@ const switchChildren = (node, switcher) => {
 export const disableForms = (forms) => {
   forms.forEach((form) => {
     form.classList.add('ad-form--disabled');
-    switchChildren(form, makeSwitcher('setAttribute'));//уже лучше
+    switchChildren(form, makeSwitcher('setAttribute'));
   });
 };
 
