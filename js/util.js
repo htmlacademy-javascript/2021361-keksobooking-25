@@ -37,7 +37,7 @@ export function getRandomFloat(min, max, precision) {
     isNaN(max) ||
     isNaN(precision)
   ) {
-    throw new Error('один или несколько паоаметров не являются числами');
+    throw new Error('один или несколько параметров не являются числами');
   }
   if (min < 0 || max <= min || precision < 1 || !Number.isInteger(precision)) {
     throw new Error(
@@ -49,3 +49,4 @@ export function getRandomFloat(min, max, precision) {
   result = Math.round(result * scalar) / scalar;
   return result > max ? max : result;
 }
+
