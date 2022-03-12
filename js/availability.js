@@ -1,4 +1,4 @@
-const forms = [...document.forms];
+const globalForms = [...document.forms];
 
 /**
  * @callback NodeSwitcher
@@ -22,14 +22,14 @@ const switchChildren = (node, switcher) => {
 };
 
 export const disableForms = () => {
-  forms.forEach((form) => {//плохой тон использовать глобальные переменные во внутренних модулях
+  globalForms.forEach((form) => {//плохой тон использовать глобальные переменные во внутренних модулях
     form.classList.add('ad-form--disabled');
     switchChildren(form, makeSwitcher('setAttribute'));//уже лучше
   });
 };
 
 export const enableForms = () => {
-  forms.forEach((form) => {
+  globalForms.forEach((form) => {
     form.classList.remove('ad-form--disabled');
     switchChildren(form, makeSwitcher('removeAttribute'));
   });
