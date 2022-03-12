@@ -4,6 +4,15 @@ forms.push(document.querySelector('.map__filters'));
 
 /**
  * 
+ * @param {boolean} off флаг для выбора метода
+ * @returns {
+   'setAttribute' | 'removeAttribute'
+ }
+ */
+const setOrRemove = (off)=>off?'setAttribute':'removeAttribute';
+
+/**
+ * 
  * @param {HTMLFormElement} node форма которую переключить
  * @param {boolean} off флаг в какое состояние переключить
  */
