@@ -21,8 +21,12 @@ const switchChildren = (node, switcher) => {
   [...node.elements].forEach(switcher);
 };
 
-export const disableForms = () => {
-  globalForms.forEach((form) => {//плохой тон использовать глобальные переменные во внутренних модулях
+/**
+ * 
+ * @param {HTMLFormElement[]} forms список форм которые заморозить.
+ */
+export const disableForms = (forms = globalForms) => {
+  forms.forEach((form) => {//плохой тон использовать глобальные переменные во внутренних модулях
     form.classList.add('ad-form--disabled');
     switchChildren(form, makeSwitcher('setAttribute'));//уже лучше
   });
