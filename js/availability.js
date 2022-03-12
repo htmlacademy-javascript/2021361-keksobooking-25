@@ -26,23 +26,23 @@ const makeSwitcher = (off) => (node) => node[setOrRemove(off)]('disabled', 'disa
 /**
  *
  * @param {HTMLFormElement} node форма которую переключить
- * @param {boolean} off флаг в какое состояние переключить
+ * @param {NodeSwitcher} switcher флаг в какое состояние переключить
  */
-const switchChildren = (node, off) => {
-  [...node.elements].forEach(makeSwitcher(off));
+const switchChildren = (node, switcher) => {
+  [...node.elements].forEach(switcher);
 };
 
 export const disableForms = () => {
   forms.forEach((form) => {
     form.classList.add('ad-form--disabled');
-    switchChildren(form, true);//функции с параметром типа boolean - анти-паттерн
+    switchChildren(form, makeSwitcher(true));//все еще анти-паттерн
   });
 };
 
 export const enableForms = () => {
   forms.forEach((form) => {
     form.classList.remove('ad-form--disabled');
-    switchChildren(form, false);
+    switchChildren(form, makeSwitcher(false));
   });
 };
 
