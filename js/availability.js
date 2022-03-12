@@ -22,7 +22,7 @@ const switchChildren = (node, switcher) => {
 };
 
 export const disableForms = () => {
-  forms.forEach((form) => {
+  forms.forEach((form) => {//плохой тон использовать глобальные переменные во внутренних модулях
     form.classList.add('ad-form--disabled');
     switchChildren(form, makeSwitcher('setAttribute'));//уже лучше
   });
