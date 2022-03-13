@@ -1,28 +1,31 @@
-const forms = [];
-forms.push(document.querySelector('.ad-form'));
-forms.push(document.querySelector('.map__filters'));
+/**
+ * Функция возвращает callback-функцию
+ * @param {string} methodName - флаг в какое состояние переключить
+ * @returns {switchTo} callback-функция
+ */
+const switchTo = (methodName) => (child) =>
+  child[methodName]('disabled', 'disabled');
 
-const switchChildren = (node, off) => {
-  for (const child of node.children) {
-    if (off) {
-      child.setAttribute('disabled', 'disabled');
-    } else {
-      child.removeAttribute('disabled', 'disabled');
-    }
-  }
+/**
+ * Функция добавляет или убирает атрибут 'disabled' у дочерних элементов формы
+ * @param {HTMLElement} form - форма
+ * @param {switchTo} useMethod - callback-функция
+ */
+const switchChildren = (form, useMethod) => {
+  [...form.elements].forEach(useMethod);
 };
 
-export const disableForms = () => {
+export const disableForms = (forms) => {
   forms.forEach((form) => {
     form.classList.add('ad-form--disabled');
-    switchChildren(form, true);
+    switchChildren(form, switchTo('setAttribute'));
   });
 };
 
-export const enableForms = () => {
+export const enableForms = (forms) => {
   forms.forEach((form) => {
     form.classList.remove('ad-form--disabled');
-    switchChildren(form, false);
+    switchChildren(form, switchTo('removeAttribute'));
   });
 };
 
