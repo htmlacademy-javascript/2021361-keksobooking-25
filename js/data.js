@@ -52,8 +52,8 @@ function getOffer(location, index) {
 export const createDemoObject = (value, index) => {
   const location = getLocation();
   return {
-    author: getAuthor(index++),
+    author: getAuthor(index + 1),
     location: location,
-    offer: getOffer(location, index++),
+    offer: getOffer(location, index + 1),
   };
 };
