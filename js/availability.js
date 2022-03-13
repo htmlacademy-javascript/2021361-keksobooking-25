@@ -1,28 +1,43 @@
-const forms = [];
-forms.push(document.querySelector('.ad-form'));
-forms.push(document.querySelector('.map__filters'));
+/**
+ * @callback NodeSwitcher
+ * @param {HTMLElement} node элемент, который переключить
+ * @returns {void}
+ */
+/**
+ *
+ * @param { 'setAttribute' | 'removeAttribute' } methodName флаг в какое состояние переключить
+ * @returns {NodeSwitcher}
+ */
+const makeSwitcher = (methodName) => (node) => node[methodName]('disabled', 'disabled');
 
-const switchChildren = (node, off) => {
-  for (const child of node.children) {
-    if (off) {
-      child.setAttribute('disabled', 'disabled');
-    } else {
-      child.removeAttribute('disabled', 'disabled');
-    }
-  }
+/**
+ *
+ * @param {HTMLFormElement} node форма которую переключить
+ * @param {NodeSwitcher} switcher флаг в какое состояние переключить
+ */
+const switchChildren = (node, switcher) => {
+  [...node.elements].forEach(switcher);
 };
 
-export const disableForms = () => {
+/**
+ *
+ * @param {HTMLFormElement[]} forms список форм которые заморозить.
+ */
+export const disableForms = (forms) => {
   forms.forEach((form) => {
     form.classList.add('ad-form--disabled');
-    switchChildren(form, true);
+    switchChildren(form, makeSwitcher('setAttribute'));
   });
 };
 
-export const enableForms = () => {
+/**
+ *
+ * @param {HTMLFormElement[]} forms список форм которые разморозить
+ */
+export const enableForms = (forms) => {
   forms.forEach((form) => {
     form.classList.remove('ad-form--disabled');
-    switchChildren(form, false);
+    switchChildren(form, makeSwitcher('removeAttribute'));
   });
 };
 
