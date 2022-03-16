@@ -1,4 +1,4 @@
-import { hideNode } from './availability.js';
+import { hideNode } from './forms.js';
 
 const OBJECTS_TYPES = {
   palace: 'Дворец',
