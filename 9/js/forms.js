@@ -125,12 +125,10 @@ export const setSelectedPricePlaceholder = (elms) => {
 };
 
 export const setTimeinTimeoutSyncrhro = (elms) => {
-
-  elms.timein.addEventListener('change', () => {
+  elms.form.addEventListener('change', (evt) => {
+    if (evt.target === elms.timeout) {
+      elms.timein.value = elms.timeout.value;
+    }
     elms.timeout.value = elms.timein.value;
-  });
-
-  elms.timeout.addEventListener('change', () => {
-    elms.timein.value = elms.timeout.value;
   });
 };
