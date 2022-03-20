@@ -1,6 +1,12 @@
 import { createDemoObject } from './data.js';
 import { renderDemoObjects } from './template.js';
-import { disableForms, enableForms, setSelectedPricePlaceholder, validateAdForm, setTimeinTimeoutSyncrhro } from './forms.js';
+import {
+  disableForms,
+  enableForms,
+  setSelectedPricePlaceholder,
+  validateAdForm,
+  setTimeinTimeoutSyncrhro,
+} from './forms.js';
 
 const globalForms = [...document.forms];
 const demoObjects = Array.from({ length: 10 }, createDemoObject);
