@@ -201,11 +201,11 @@
           <fieldset class="ad-form__element">
             <label class="ad-form__label" for="type">Тип жилья</label>
             <select id="type" name="type">
-              <option value="bungalow">Бунгало</option>
-              <option value="flat" selected>Квартира</option>
-              <option value="hotel">Отель</option>
-              <option value="house">Дом</option>
-              <option value="palace">Дворец</option>
+              <option value="bungalow" data-minprice="0">Бунгало</option>
+              <option value="flat" data-minprice="1000" >Квартира</option>
+              <option value="hotel" data-minprice="3000" selected>Отель</option>
+              <option value="house" data-minprice="5000">Дом</option>
+              <option value="palace" data-minprice="10000">Дворец</option>
             </select>
           </fieldset>
           <fieldset class="ad-form__element">
@@ -214,7 +214,7 @@
               id="price"
               name="price"
               type="number"
-              placeholder="5000"
+              placeholder=""
               min="0"
               max="100000"
               required
