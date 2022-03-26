@@ -20,6 +20,9 @@ export const createSlider = (adFormElements) => {
 
   slider.noUiSlider.on('slide', () => {
     adFormElements.price.value = slider.noUiSlider.get();
+  });
+
+  slider.noUiSlider.on('change', () => {
     price.dispatchEvent(new Event('input'));
   });
 
