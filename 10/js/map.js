@@ -2,8 +2,9 @@ import { setAddress } from './forms.js';
 import { getTemplate } from './template.js';
 
 export const createMap = (mapSettings, enableForms, adFormElements) => {
-  const { element, lat, lng, scale } = mapSettings;
-  const map = L.map(element).setView([lat, lng], scale).whenReady(enableForms);
+  const { lat, lng, scale } = mapSettings;
+  const {mapCanvas} = adFormElements;
+  const map = L.map(mapCanvas).setView([lat, lng], scale).whenReady(enableForms);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution:

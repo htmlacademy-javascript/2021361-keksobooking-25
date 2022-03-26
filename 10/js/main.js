@@ -30,10 +30,10 @@ const adFormElements = {
   timeout: adForm.querySelector('#timeout'),
   address: adForm.querySelector('#address'),
   slider: adForm.querySelector('#slider'),
+  mapCanvas: document.querySelector('#map-canvas'),
 };
 
 const mapSettings = {
-  element: document.querySelector('#map-canvas'),
   lat: 35.684835,
   lng: 139.752482,
   scale: 12,
