@@ -19,12 +19,10 @@ export const createSlider = (adFormElements) => {
   });
 
   slider.noUiSlider.on('slide', () => {
-    console.log('изменение СЛАЙДЕРА');
     adFormElements.price.value = slider.noUiSlider.get();
   });
 
   price.addEventListener('input', (evt) => {
-    console.log('изменение ЦЕНЫ');
     slider.noUiSlider.set(evt.target.value);
   });
 };
