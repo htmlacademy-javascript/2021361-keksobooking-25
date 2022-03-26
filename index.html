@@ -5,6 +5,9 @@
     <link rel="stylesheet" href="css/normalize.css" />
     <link rel="stylesheet" href="css/style.css" />
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="leaflet/leaflet.css" />
+    <link rel="stylesheet" href="nouislider/nouislider.css"
+    />
     <title>Кексобукинг</title>
   </head>
   <body>
@@ -196,13 +199,18 @@
             <label class="ad-form__label" for="address"
               >Адрес (координаты)</label
             >
-            <input id="address" name="address" type="text" />
+            <input
+              id="address"
+              name="address"
+              type="text"
+              readonly="readonly"
+            />
           </fieldset>
           <fieldset class="ad-form__element">
             <label class="ad-form__label" for="type">Тип жилья</label>
             <select id="type" name="type">
               <option value="bungalow" data-minprice="0">Бунгало</option>
-              <option value="flat" data-minprice="1000" >Квартира</option>
+              <option value="flat" data-minprice="1000">Квартира</option>
               <option value="hotel" data-minprice="3000" selected>Отель</option>
               <option value="house" data-minprice="5000">Дом</option>
               <option value="palace" data-minprice="10000">Дворец</option>
@@ -219,7 +227,7 @@
               max="100000"
               required
             />
-            <div class="ad-form__slider"></div>
+            <div id="slider" class="ad-form__slider"></div>
           </fieldset>
           <fieldset class="ad-form__element ad-form__element--time">
             <label class="ad-form__label" for="timein"
@@ -485,5 +493,7 @@
 
     <script src="pristine\pristine.min.js" type="text/javascript"></script>
     <script src="js/main.js" type="module"></script>
+    <script src="leaflet/leaflet.js"></script>
+    <script src="nouislider/nouislider.js"></script>
   </body>
 </html>
