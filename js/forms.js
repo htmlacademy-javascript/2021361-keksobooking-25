@@ -1,5 +1,4 @@
-const NOT_FOR_GUESTS = 100;
-const DECIMAL_SYS = 10;
+import { MAP_DIGIT } from './util.js';
 
 /**
  * Функция возвращает callback-функцию
@@ -32,107 +31,32 @@ export const enableForms = (forms) => {
   });
 };
 
-export const hideNode = (node) => {
-  node.classList.add('visually-hidden');
+export const hideElement = (element) => {
+  element.classList.add('visually-hidden');
 };
 
-export const validateAdForm = (elms) => {
-  const pristine = new window.Pristine(elms.form, {
-    classTo: 'ad-form__element',
-    errorClass: 'form__item--invalid',
-    successClass: 'form__item--valid',
-    errorTextParent: 'ad-form__element',
-    errorTextTag: 'span',
-    errorTextClass: 'form__error',
-  });
+export const setSelectedPricePlaceholder = (adFormElements) => {
+  const { price, type } = adFormElements;
 
-  /**
-   * Функция обновляет (очищает) содержимое сообщений об ошибках
-   * @param {Array} errorTextTags - массив тегов с классом '.form__error'
-   */
-  const clearErrorTextTag = (errorTextTags) => {
-    errorTextTags
-      .filter((errorTextTag) => errorTextTag !== null)
-      .forEach((errorTextTag) => (errorTextTag.textContent = ''));
-  };
-
-  const getPriceValidate = () => {
-    const minPrice = parseInt(
-      elms.type[elms.type.selectedIndex].dataset['minprice'],
-      DECIMAL_SYS
-    );
-    const currentPrice = parseInt(elms.price.value, DECIMAL_SYS);
-
-    return currentPrice >= minPrice;
-  };
-
-  const getRoomsOrCapacityValidate = () => {
-    const errorTextTags = [];
-    errorTextTags.push(elms.rooms.parentElement.querySelector('.form__error'));
-    errorTextTags.push(
-      elms.capacity.parentElement.querySelector('.form__error')
-    );
-    clearErrorTextTag(errorTextTags);
-
-    const roomsCount = parseInt(elms.rooms.value, DECIMAL_SYS);
-    const capacityCount = parseInt(elms.capacity.value, DECIMAL_SYS);
-
-    return roomsCount === NOT_FOR_GUESTS
-      ? capacityCount === 0
-      : capacityCount > 0 && roomsCount >= capacityCount;
-  };
-
-  const getPriceErrorMessage = () => 'price error';
-
-  const getRoomsErrorMessage = () => 'rooms error';
-
-  const getCapacityErrorMessage = () => 'capacity error';
-
-  pristine.addValidator(elms.price, getPriceValidate, getPriceErrorMessage);
-
-  pristine.addValidator(
-    elms.rooms,
-    getRoomsOrCapacityValidate,
-    getRoomsErrorMessage
-  );
-
-  pristine.addValidator(
-    elms.capacity,
-    getRoomsOrCapacityValidate,
-    getCapacityErrorMessage
-  );
-
-  elms.type.addEventListener('change', () => {
-    elms.price.value = null;
-    elms.price.placeholder =
-      elms.type[elms.type.selectedIndex].dataset['minprice'];
-    const errorTextTags = [];
-    errorTextTags.push(elms.price.parentElement.querySelector('.form__error'));
-    clearErrorTextTag(errorTextTags);
-  });
-
-  elms.form.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    if (pristine.validate()) {
-      elms.form.submit();
-    }
-  });
+  price.placeholder = type[type.selectedIndex].dataset['minprice'];
 };
 
-export const setSelectedPricePlaceholder = (elms) => {
-  elms.price.placeholder =
-    elms.type[elms.type.selectedIndex].dataset['minprice'];
-};
-
-export const setTimeinTimeoutSyncrhro = (elms) => {
-  elms.form.addEventListener('change', (evt) => {
+export const setTimeinTimeoutSynchro = (adFormElements) => {
+  const { form, timeout, timein } = adFormElements;
+  form.addEventListener('change', (evt) => {
     switch (evt.target) {
-      case elms.timeout:
-        elms.timein.value = elms.timeout.value;
+      case timeout:
+        timein.value = timeout.value;
         break;
-      case elms.timein:
-        elms.timeout.value = elms.timein.value;
+      case timein:
+        timeout.value = timein.value;
         break;
     }
   });
+};
+
+export const setAddress = (mapSettings, adFormElements) => {
+  const { address } = adFormElements;
+  const { lat, lng } = mapSettings;
+  address.value = `${lat.toFixed(MAP_DIGIT)}, ${lng.toFixed(MAP_DIGIT)}`;
 };

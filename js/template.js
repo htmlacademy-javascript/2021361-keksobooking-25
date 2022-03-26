@@ -1,4 +1,4 @@
-import { hideNode } from './forms.js';
+import { hideElement } from './forms.js';
 
 const OBJECTS_TYPES = {
   palace: 'Дворец',
@@ -7,15 +7,14 @@ const OBJECTS_TYPES = {
   bungalow: 'Бунгало',
   hotel: 'Отель',
 };
+
 const cardTemplate = document
   .querySelector('#card')
   .content.querySelector('.popup');
-const mapCanvas = document.querySelector('.map__canvas');
-const fragment = document.createDocumentFragment();
 
 const setTitle = (offer, title) => {
   if (offer.title.length === 0) {
-    hideNode(title);
+    hideElement(title);
     return;
   }
 
@@ -24,7 +23,7 @@ const setTitle = (offer, title) => {
 
 const setAddress = (offer, address) => {
   if (offer.address.length === 0) {
-    hideNode(address);
+    hideElement(address);
     return;
   }
 
@@ -33,7 +32,7 @@ const setAddress = (offer, address) => {
 
 const setPrice = (offer, price) => {
   if (offer.price === 0) {
-    hideNode(price);
+    hideElement(price);
     return;
   }
 
@@ -42,7 +41,7 @@ const setPrice = (offer, price) => {
 
 const setType = (offer, type) => {
   if (offer.type.length === 0) {
-    hideNode(type);
+    hideElement(type);
     return;
   }
 
@@ -51,7 +50,7 @@ const setType = (offer, type) => {
 
 const setCapacity = (offer, capacity) => {
   if (offer.rooms.length === 0 || offer.guests.length === 0) {
-    hideNode(capacity);
+    hideElement(capacity);
     return;
   }
 
@@ -60,7 +59,7 @@ const setCapacity = (offer, capacity) => {
 
 const setTime = (offer, time) => {
   if (offer.checkin.length === 0 || offer.checkout.length === 0) {
-    hideNode(time);
+    hideElement(time);
     return;
   }
 
@@ -69,7 +68,7 @@ const setTime = (offer, time) => {
 
 const setFeatures = (offer, features) => {
   if (offer.features.length === 0) {
-    hideNode(features);
+    hideElement(features);
     return;
   }
 
@@ -86,7 +85,7 @@ const setFeatures = (offer, features) => {
 
 const setDescription = (offer, description) => {
   if (offer.description.length === 0) {
-    hideNode(description);
+    hideElement(description);
     return;
   }
 
@@ -95,7 +94,7 @@ const setDescription = (offer, description) => {
 
 const setPhotos = (offer, photos) => {
   if (offer.photos.length === 0) {
-    hideNode(photos);
+    hideElement(photos);
     return;
   }
 
@@ -110,14 +109,16 @@ const setPhotos = (offer, photos) => {
 
 const setAvatar = (author, img) => {
   if (author.avatar.length === 0) {
-    hideNode(img);
+    hideElement(img);
     return;
   }
 
   img.src = author.avatar;
 };
 
-const fillTemplate = ({ author, offer }) => {
+const fillTemplate = (obj) => {
+  const { author, offer } = obj;
+
   const newCard = cardTemplate.cloneNode(true);
 
   setTitle(offer, newCard.querySelector('.popup__title'));
@@ -140,12 +141,7 @@ const fillTemplate = ({ author, offer }) => {
 
   setAvatar(author, newCard.querySelector('.popup__avatar'));
 
-  fragment.appendChild(newCard);
+  return newCard;
 };
 
-export const renderDemoObjects = (demoObjects) => {
-  demoObjects.forEach((demoObject) => {
-    fillTemplate(demoObject);
-  });
-  mapCanvas.append(fragment);
-};
+export const getTemplate = (obj) => fillTemplate(obj);
