@@ -1,4 +1,4 @@
-import { DECIMAL_SYS, NOT_FOR_GUESTS } from './util.js';
+import { DECIMAL, NOT_FOR_GUESTS, getMinPrice } from './data.js';
 
 /**
  * Функция обновляет (очищает) содержимое сообщений об ошибках
@@ -14,8 +14,25 @@ const clearErrorTextTag = (...elements) => {
     .forEach((errorTextTag) => (errorTextTag.textContent = ''));
 };
 
-export const validateAdForm = (adFormElements) => {
-  const { form, type, price, rooms, capacity, slider } = adFormElements;
+const priceOnInput = (adFormElements) => {
+  const { price, slider } = adFormElements;
+  if (price.value === '0' || isNaN(price.valueAsNumber)) {
+    price.value = '';
+    slider.noUiSlider.reset();
+    clearErrorTextTag(price);
+  } else {
+    price.value = price.valueAsNumber.toFixed(0);
+  }
+};
+
+export const priceDispatchEvent = (adFormElements) => {
+  const { type, price } = adFormElements;
+  price.dispatchEvent(new Event('input'));
+  price.placeholder = getMinPrice(type[type.selectedIndex].value).placeholder;
+};
+
+export const setValidateAdForm = (adFormElements) => {
+  const { form, type, price, rooms, capacity } = adFormElements;
 
   const pristine = new window.Pristine(form, {
     classTo: 'ad-form__element',
@@ -27,53 +44,45 @@ export const validateAdForm = (adFormElements) => {
   });
 
   const getPriceValidate = () => {
-    const minPrice = parseInt(
-      type[type.selectedIndex].dataset['minprice'],
-      DECIMAL_SYS
-    );
-    const currentPrice = parseInt(price.value, DECIMAL_SYS);
-
+    const currentType = type[type.selectedIndex].value;
+    const minPrice = getMinPrice(currentType).value;
+    const currentPrice = parseInt(price.value, DECIMAL);
     return currentPrice >= minPrice;
   };
 
   const getRoomsOrCapacityValidate = () => {
     clearErrorTextTag(rooms, capacity);
 
-    const roomsCount = parseInt(rooms.value, DECIMAL_SYS);
-    const capacityCount = parseInt(capacity.value, DECIMAL_SYS);
+    const roomsCount = parseInt(rooms.value, DECIMAL);
+    const capacityCount = parseInt(capacity.value, DECIMAL);
 
     return roomsCount === NOT_FOR_GUESTS
       ? capacityCount === 0
       : capacityCount > 0 && roomsCount >= capacityCount;
   };
 
-  const getPriceErrorMessage = () => 'price error';
+  const getPriceErrorMessage = () =>
+    `Минимальная цена от ${getMinPrice(type[type.selectedIndex].value).value} `;
 
-  const getRoomsErrorMessage = () => 'rooms error';
-
-  const getCapacityErrorMessage = () => 'capacity error';
+  const getRoomsOrCapacityErrorMessage = () => 'Неверное значение';
 
   pristine.addValidator(price, getPriceValidate, getPriceErrorMessage);
 
   pristine.addValidator(
     rooms,
     getRoomsOrCapacityValidate,
-    getRoomsErrorMessage
+    getRoomsOrCapacityErrorMessage
   );
 
   pristine.addValidator(
     capacity,
     getRoomsOrCapacityValidate,
-    getCapacityErrorMessage
+    getRoomsOrCapacityErrorMessage
   );
 
-  type.addEventListener('input', () => {
-    price.value = null;
-    slider.noUiSlider.reset();
+  type.addEventListener('input', () => priceDispatchEvent(adFormElements));
 
-    price.placeholder = type[type.selectedIndex].dataset['minprice'];
-    clearErrorTextTag(price);
-  });
+  price.addEventListener('input', () => priceOnInput(adFormElements));
 
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();

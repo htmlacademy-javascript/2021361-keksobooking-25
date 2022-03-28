@@ -1,7 +1,53 @@
 import { getRandomInteger, getRandomFloat } from './util.js';
 
+export const DECIMAL = 10;
+
+export const MAX_NUMBER_SIMILAR = 10;
+
+export const NOT_FOR_GUESTS = 100;
+
+export const MAP_DIGIT = 5;
+
+export const getMinPrice = (type) => {
+  let price = 0;
+  switch (type) {
+    case 'flat':
+      price = 1000;
+      break;
+    case 'hotel':
+      price = 3000;
+      break;
+    case 'house':
+      price = 5000;
+      break;
+    case 'palace':
+      price = 10000;
+      break;
+  }
+
+  return {
+    value: price,
+    placeholder: price === 0 ? 'вход свободный' : `от ${price}`,
+  };
+};
+
+const DEMO_DESCRIPTIONS = [
+  'замечательное место',
+  'хороший вид из окна',
+  'удобная парковка',
+  'дорогой ремонт',
+  'авторский дизайн интерьера',
+  'удобная мебель',
+  'рядом есть прачечная',
+  'рядом есть кинотеатры',
+  'можно с домашними питомцами',
+  'есть видеодомофон на входе',
+];
+
 const OBJECTS_TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
+
 const CHECKIN_HOURS = ['12:00', '13:00', '14:00'];
+
 const FEATURES = [
   'wifi',
   'dishwasher',
@@ -10,6 +56,7 @@ const FEATURES = [
   'elevator',
   'conditioner',
 ];
+
 const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
@@ -35,11 +82,11 @@ function getOffer(location, index) {
     price: getRandomInteger(10000, 100000),
     type: OBJECTS_TYPES[getRandomInteger(0, 4, true)],
     rooms: getRandomInteger(1, 4, true),
-    guests: getRandomInteger(2, 10, true),
+    guests: getRandomInteger(0, 3, true),
     checkin: CHECKIN_HOURS[getRandomInteger(0, 2, true)],
     checkout: CHECKIN_HOURS[getRandomInteger(0, 2, true)],
     features: FEATURES.slice(getRandomInteger(0, 5, true)),
-    description: 'описание помещения',
+    description: DEMO_DESCRIPTIONS[index - 1],
     photos: PHOTOS.slice(getRandomInteger(0, 2, true)),
   };
 }

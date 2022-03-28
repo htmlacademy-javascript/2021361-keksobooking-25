@@ -1,10 +1,13 @@
+import { DECIMAL } from './data.js';
+import { priceDispatchEvent } from './validate.js';
+
 export const createSlider = (adFormElements) => {
   const { slider, price } = adFormElements;
 
   noUiSlider.create(slider, {
     range: {
-      min: parseInt(adFormElements.price.min, 10),
-      max: parseInt(adFormElements.price.max, 10),
+      min: parseInt(adFormElements.price.min, DECIMAL),
+      max: parseInt(adFormElements.price.max, DECIMAL),
     },
     start: 0,
     step: 1,
@@ -13,7 +16,7 @@ export const createSlider = (adFormElements) => {
         return value.toFixed(0);
       },
       from: function (value) {
-        return parseInt(value, 10);
+        return parseInt(value, DECIMAL);
       },
     },
   });
@@ -23,7 +26,7 @@ export const createSlider = (adFormElements) => {
   });
 
   slider.noUiSlider.on('change', () => {
-    price.dispatchEvent(new Event('input'));
+    priceDispatchEvent(adFormElements);
   });
 
   price.addEventListener('input', (evt) => {

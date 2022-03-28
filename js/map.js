@@ -1,10 +1,36 @@
 import { setAddress } from './forms.js';
-import { getTemplate } from './template.js';
+import { MAX_NUMBER_SIMILAR } from './data.js';
+import { getCardTemplate } from './templates.js';
+
+export const getMarker = (lat, lng) => {
+  const icon = L.icon({
+    iconUrl: 'img/pin.svg',
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
+  });
+
+  const marker = L.marker([lat, lng], {
+    icon: icon,
+  });
+
+  return marker;
+};
+
+export const putToMap = (demoObject, map, marker) => {
+  marker.addTo(map);
+  marker.bindPopup(getCardTemplate(demoObject));
+};
+
+export const removeFromMap = (map, marker) => {
+  marker.remove(map);
+};
 
 export const createMap = (mapSettings, enableForms, adFormElements) => {
   const { lat, lng, scale } = mapSettings;
-  const {mapCanvas} = adFormElements;
-  const map = L.map(mapCanvas).setView([lat, lng], scale).whenReady(enableForms);
+  const { mapCanvas } = adFormElements;
+  const map = L.map(mapCanvas)
+    .setView([lat, lng], scale)
+    .whenReady(enableForms);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution:
@@ -22,6 +48,8 @@ export const createMap = (mapSettings, enableForms, adFormElements) => {
     icon: mainIcon,
   }).addTo(map);
 
+  setAddress(mapSettings, adFormElements);
+
   mainMarker.on('moveend', (evt) => {
     const latLng = evt.target.getLatLng();
     mapSettings.lat = latLng.lat;
@@ -32,18 +60,17 @@ export const createMap = (mapSettings, enableForms, adFormElements) => {
   return map;
 };
 
-export const putToMap = (obj, map) => {
-  const { location } = obj;
-
-  const icon = L.icon({
-    iconUrl: 'img/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
+export const getMapEntries = (map, demoObjects, filter) => {
+  const mapEntries = [];
+  demoObjects.forEach((demoObject, index) => {
+    if (index < MAX_NUMBER_SIMILAR) {
+      const lat = demoObject.location.lat;
+      const lng = demoObject.location.lng;
+      const marker = getMarker(lat, lng);
+      putToMap(demoObject, map, marker);
+      mapEntries.push({ data: demoObject, marker: marker, filters: Object.assign({}, filter)});
+    }
   });
 
-  L.marker([location.lat, location.lng], {
-    icon: icon,
-  })
-    .addTo(map)
-    .bindPopup(getTemplate(obj));
+  return mapEntries;
 };
