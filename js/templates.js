@@ -144,4 +144,4 @@ const fillTemplate = (obj) => {
   return newCard;
 };
 
-export const getTemplate = (obj) => fillTemplate(obj);
+export const getCardTemplate = (obj) => fillTemplate(obj);

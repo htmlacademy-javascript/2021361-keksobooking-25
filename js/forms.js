@@ -1,4 +1,4 @@
-import { MAP_DIGIT } from './util.js';
+import { MAP_DIGIT, getMinPrice } from './data.js';
 
 /**
  * Функция возвращает callback-функцию
@@ -37,8 +37,7 @@ export const hideElement = (element) => {
 
 export const setSelectedPricePlaceholder = (adFormElements) => {
   const { price, type } = adFormElements;
-
-  price.placeholder = type[type.selectedIndex].dataset['minprice'];
+  price.placeholder = getMinPrice(type[type.selectedIndex].value).placeholder;
 };
 
 export const setTimeinTimeoutSynchro = (adFormElements) => {

@@ -1,22 +1,23 @@
 import { createDemoObject } from './data.js';
 
-import { createMap, putToMap } from './map.js';
+import { createMap, getMapEntries } from './map.js';
 
-import { validateAdForm } from './validate.js';
+import { setValidateAdForm } from './validate.js';
 
 import { createSlider } from './slider.js';
+
+import { setFilters } from './filters.js';
 
 import {
   disableForms,
   enableForms,
   setSelectedPricePlaceholder,
   setTimeinTimeoutSynchro,
-  setAddress,
 } from './forms.js';
 
-const demoObjects = Array.from({ length: 10 }, createDemoObject);
-
 const forms = [...document.forms];
+
+const demoObjects = Array.from({ length: 10 }, createDemoObject);
 
 const adForm = document.querySelector('.ad-form');
 
@@ -39,20 +40,40 @@ const mapSettings = {
   scale: 12,
 };
 
+const filtersForm = document.querySelector('.map__filters');
+
+const filtersFormElements = {
+  form: filtersForm,
+  type: filtersForm.querySelector('#housing-type'),
+  price: filtersForm.querySelector('#housing-price'),
+  rooms: filtersForm.querySelector('#housing-rooms'),
+  capacity: filtersForm.querySelector('#housing-guests'),
+  wifi: filtersForm.querySelector('#filter-wifi'),
+  dishwasher: filtersForm.querySelector('#filter-dishwasher'),
+  parking: filtersForm.querySelector('#filter-parking'),
+  washer: filtersForm.querySelector('#filter-washer'),
+  elevator: filtersForm.querySelector('#filter-elevator'),
+  conditioner: filtersForm.querySelector('#filter-conditioner'),
+};
+
 disableForms(forms);
 
 setSelectedPricePlaceholder(adFormElements);
 
-validateAdForm(adFormElements);
-
 setTimeinTimeoutSynchro(adFormElements);
 
-const map = createMap(mapSettings, () => enableForms(forms), adFormElements);
-
-setAddress(mapSettings, adFormElements);
-
-demoObjects.forEach((obj) => {
-  putToMap(obj, map);
-});
+setValidateAdForm(adFormElements);
 
 createSlider(adFormElements);
+
+const mapWhenReady = () => enableForms(forms);
+
+const map = createMap(mapSettings, mapWhenReady, adFormElements);
+
+const filter = Object.fromEntries(
+  Object.entries(filtersFormElements).map(([key]) => [key, false])
+);
+
+const mapEntries = getMapEntries(map, demoObjects, filter);
+
+setFilters(filtersFormElements, map, mapEntries);

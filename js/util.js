@@ -1,7 +1,3 @@
-export const DECIMAL_SYS = 10;
-export const NOT_FOR_GUESTS = 100;
-export const MAP_DIGIT = 5;
-
 /**
  * Функция возвращает случайное целого число в заданном интервале, включительно
  * @param {number} min - первое положительное число, включая "0"
@@ -53,5 +49,3 @@ export function getRandomFloat(min, max, precision) {
   result = Math.round(result * scalar) / scalar;
   return result > max ? max : result;
 }
-
-

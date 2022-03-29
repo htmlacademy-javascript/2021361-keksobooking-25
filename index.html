@@ -6,8 +6,7 @@
     <link rel="stylesheet" href="css/style.css" />
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="leaflet/leaflet.css" />
-    <link rel="stylesheet" href="nouislider/nouislider.css"
-    />
+    <link rel="stylesheet" href="nouislider/nouislider.css" />
     <title>Кексобукинг</title>
   </head>
   <body>
@@ -209,11 +208,11 @@
           <fieldset class="ad-form__element">
             <label class="ad-form__label" for="type">Тип жилья</label>
             <select id="type" name="type">
-              <option value="bungalow" data-minprice="0">Бунгало</option>
-              <option value="flat" data-minprice="1000">Квартира</option>
-              <option value="hotel" data-minprice="3000" selected>Отель</option>
-              <option value="house" data-minprice="5000">Дом</option>
-              <option value="palace" data-minprice="10000">Дворец</option>
+              <option value="bungalow">Бунгало</option>
+              <option value="flat">Квартира</option>
+              <option value="hotel" selected>Отель</option>
+              <option value="house">Дом</option>
+              <option value="palace">Дворец</option>
             </select>
           </fieldset>
           <fieldset class="ad-form__element">
@@ -258,9 +257,9 @@
           <fieldset class="ad-form__element">
             <label class="ad-form__label" for="capacity">Количество мест</label>
             <select id="capacity" name="capacity" required>
-              <option value="3" selected>для 3 гостей</option>
+              <option value="3">для 3 гостей</option>
               <option value="2">для 2 гостей</option>
-              <option value="1">для 1 гостя</option>
+              <option value="1" selected>для 1 гостя</option>
               <option value="0">не для гостей</option>
             </select>
           </fieldset>
@@ -492,8 +491,8 @@
     </template>
 
     <script src="pristine\pristine.min.js" type="text/javascript"></script>
-    <script src="js/main.js" type="module"></script>
     <script src="leaflet/leaflet.js"></script>
     <script src="nouislider/nouislider.js"></script>
+    <script src="js/main.js" type="module"></script>
   </body>
 </html>
