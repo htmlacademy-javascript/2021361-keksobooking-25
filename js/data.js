@@ -9,26 +9,16 @@ export const NOT_FOR_GUESTS = 100;
 export const MAP_DIGIT = 5;
 
 export const getMinPrice = (type) => {
-  let price = 0;
-  switch (type) {
-    case 'flat':
-      price = 1000;
-      break;
-    case 'hotel':
-      price = 3000;
-      break;
-    case 'house':
-      price = 5000;
-      break;
-    case 'palace':
-      price = 10000;
-      break;
-  }
-
-  return {
-    value: price,
-    placeholder: price === 0 ? 'вход свободный' : `от ${price}`,
+  const settings = {
+    bungalow:0,
+    flat:1000,
+    hotel: 3000,
+    house: 5000,
+    palace: 10000,
   };
+  const price = settings[type];
+  const placeholder = price === 0 ? 'вход свободный' : `от ${price}`;
+  return ({price, placeholder});
 };
 
 const DEMO_DESCRIPTIONS = [

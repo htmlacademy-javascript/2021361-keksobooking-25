@@ -45,7 +45,7 @@ export const setValidateAdForm = (adFormElements) => {
 
   const getPriceValidate = () => {
     const currentType = type[type.selectedIndex].value;
-    const minPrice = getMinPrice(currentType).value;
+    const minPrice = getMinPrice(currentType).price;
     const currentPrice = parseInt(price.value, DECIMAL);
     return currentPrice >= minPrice;
   };
@@ -62,7 +62,7 @@ export const setValidateAdForm = (adFormElements) => {
   };
 
   const getPriceErrorMessage = () =>
-    `Минимальная цена от ${getMinPrice(type[type.selectedIndex].value).value} `;
+    `Минимальная цена от ${getMinPrice(type[type.selectedIndex].value).price} `;
 
   const getRoomsOrCapacityErrorMessage = () => 'Неверное значение';
 
