@@ -1,12 +1,12 @@
 import { setAddress } from './forms.js';
-import { MAX_NUMBER_SIMILAR } from './data.js';
+import { MAX_MAP_ENTRIES, MAIN_ICON_SIZE, ICON_SIZE } from './init.js';
 import { getCardTemplate } from './templates.js';
 
 export const getMarker = (lat, lng) => {
   const icon = L.icon({
     iconUrl: 'img/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
+    iconSize: [ICON_SIZE, ICON_SIZE],
+    iconAnchor: [ICON_SIZE/2, ICON_SIZE],
   });
 
   const marker = L.marker([lat, lng], {
@@ -39,8 +39,8 @@ export const createMap = (mapSettings, enableForms, adFormElements) => {
 
   const mainIcon = L.icon({
     iconUrl: 'img/main-pin.svg',
-    iconSize: [52, 52],
-    iconAnchor: [26, 52],
+    iconSize: [MAIN_ICON_SIZE, MAIN_ICON_SIZE],
+    iconAnchor: [MAIN_ICON_SIZE/2, MAIN_ICON_SIZE],
   });
 
   const mainMarker = L.marker([lat, lng], {
@@ -63,7 +63,7 @@ export const createMap = (mapSettings, enableForms, adFormElements) => {
 export const getMapEntries = (map, demoObjects, filter) => {
   const mapEntries = [];
   demoObjects.forEach((demoObject, index) => {
-    if (index < MAX_NUMBER_SIMILAR) {
+    if (index < MAX_MAP_ENTRIES) {
       const lat = demoObject.location.lat;
       const lng = demoObject.location.lng;
       const marker = getMarker(lat, lng);

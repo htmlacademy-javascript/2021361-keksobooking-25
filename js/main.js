@@ -1,4 +1,4 @@
-import { createDemoObject } from './data.js';
+import { createDemoObject } from './init.js';
 
 import { createMap, getMapEntries } from './map.js';
 

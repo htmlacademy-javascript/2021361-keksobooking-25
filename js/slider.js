@@ -1,4 +1,4 @@
-import { DECIMAL } from './data.js';
+import { DECIMAL } from './init.js';
 import { priceDispatchEvent } from './validate.js';
 
 export const createSlider = (adFormElements) => {

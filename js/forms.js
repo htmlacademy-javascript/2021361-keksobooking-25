@@ -1,4 +1,4 @@
-import { MAP_DIGIT, getMinPrice } from './data.js';
+import { MAP_DIGIT, getMinPrice } from './init.js';
 
 /**
  * Функция возвращает callback-функцию

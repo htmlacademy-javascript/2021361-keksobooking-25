@@ -2,11 +2,15 @@ import { getRandomInteger, getRandomFloat } from './util.js';
 
 export const DECIMAL = 10;
 
-export const MAX_NUMBER_SIMILAR = 10;
+export const MAX_MAP_ENTRIES = 10;
 
 export const NOT_FOR_GUESTS = 100;
 
 export const MAP_DIGIT = 5;
+
+export const MAIN_ICON_SIZE = 52;
+
+export const ICON_SIZE = 40;
 
 export const getMinPrice = (type) => {
   const settings = {
