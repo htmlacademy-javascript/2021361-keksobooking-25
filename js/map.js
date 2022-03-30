@@ -60,7 +60,7 @@ export const createMap = (mapSettings, enableForms, adFormElements) => {
   return map;
 };
 
-export const getMapEntries = (map, demoObjects, filter) => {
+export const getMapEntries = (map, demoObjects, dataFilters) => {
   const mapEntries = [];
   demoObjects.forEach((demoObject, index) => {
     if (index < MAX_MAP_ENTRIES) {
@@ -68,7 +68,7 @@ export const getMapEntries = (map, demoObjects, filter) => {
       const lng = demoObject.location.lng;
       const marker = getMarker(lat, lng);
       putToMap(demoObject, map, marker);
-      mapEntries.push({ data: demoObject, marker: marker, filters: Object.assign({}, filter)});
+      mapEntries.push({ data: demoObject, marker, filters: Object.assign({}, dataFilters)});
     }
   });
 

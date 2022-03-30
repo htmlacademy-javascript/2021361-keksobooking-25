@@ -11,8 +11,7 @@ import { setFilters } from './filters.js';
 import {
   disableForms,
   enableForms,
-  setSelectedPricePlaceholder,
-  setTimeinTimeoutSynchro,
+  initAdForm,
 } from './forms.js';
 
 const forms = [...document.forms];
@@ -58,9 +57,7 @@ const filtersFormElements = {
 
 disableForms(forms);
 
-setSelectedPricePlaceholder(adFormElements);
-
-setTimeinTimeoutSynchro(adFormElements);
+initAdForm(adFormElements);
 
 setValidateAdForm(adFormElements);
 
@@ -70,10 +67,10 @@ const mapWhenReady = () => enableForms(forms);
 
 const map = createMap(mapSettings, mapWhenReady, adFormElements);
 
-const filter = Object.fromEntries(
+const dataFilters = Object.fromEntries(
   Object.entries(filtersFormElements).map(([key]) => [key, false])
 );
 
-const mapEntries = getMapEntries(map, demoObjects, filter);
+const mapEntries = getMapEntries(map, demoObjects, dataFilters);
 
 setFilters(filtersFormElements, map, mapEntries);

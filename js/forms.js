@@ -35,12 +35,12 @@ export const hideElement = (element) => {
   element.classList.add('visually-hidden');
 };
 
-export const setSelectedPricePlaceholder = (adFormElements) => {
+const setSelectedPricePlaceholder = (adFormElements) => {
   const { price, type } = adFormElements;
   price.placeholder = getMinPrice(type[type.selectedIndex].value).placeholder;
 };
 
-export const setTimeinTimeoutSynchro = (adFormElements) => {
+const setTimeinTimeoutSynchro = (adFormElements) => {
   const { form, timeout, timein } = adFormElements;
   form.addEventListener('change', (evt) => {
     switch (evt.target) {
@@ -52,6 +52,11 @@ export const setTimeinTimeoutSynchro = (adFormElements) => {
         break;
     }
   });
+};
+
+export const initAdForm = (adFormElements) => {
+  setTimeinTimeoutSynchro(adFormElements);
+  setSelectedPricePlaceholder(adFormElements);
 };
 
 export const setAddress = (mapSettings, adFormElements) => {
