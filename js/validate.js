@@ -1,4 +1,4 @@
-import { DECIMAL, NOT_FOR_GUESTS, getMinPrice } from './init.js';
+import { DECIMAL, NOT_FOR_GUESTS, getMinPrice } from './util.js';
 
 /**
  * Функция обновляет (очищает) содержимое сообщений об ошибках

@@ -1,4 +1,5 @@
 import { putToMap, removeFromMap } from './map.js';
+import { filtersFormElements } from './util.js';
 
 const priceRange = {
   any: { min: 0, max: 100000 },
@@ -10,7 +11,7 @@ const priceRange = {
 const setTypeFilter = (filter, mapEntries) => {
   mapEntries.forEach((entry) => {
     entry.filters.type = !(
-      entry.data.offer.type === filter || filter === 'any'
+      entry.ad.offer.type === filter || filter === 'any'
     );
   });
 };
@@ -19,7 +20,7 @@ const setPriceFilter = (filter, mapEntries) => {
   const range = priceRange[filter];
   mapEntries.forEach((entry) => {
     entry.filters.price = !(
-      entry.data.offer.price >= range.min && entry.data.offer.price < range.max
+      entry.ad.offer.price >= range.min && entry.ad.offer.price < range.max
     );
   });
 };
@@ -27,7 +28,7 @@ const setPriceFilter = (filter, mapEntries) => {
 const setRoomsFilter = (filter, mapEntries) => {
   mapEntries.forEach((entry) => {
     entry.filters.rooms = !(
-      entry.data.offer.rooms === Number(filter) || filter === 'any'
+      entry.ad.offer.rooms === Number(filter) || filter === 'any'
     );
   });
 };
@@ -35,7 +36,7 @@ const setRoomsFilter = (filter, mapEntries) => {
 const setCapacityFilter = (filter, mapEntries) => {
   mapEntries.forEach((entry) => {
     entry.filters.capacity = !(
-      entry.data.offer.guests === Number(filter) || filter === 'any'
+      entry.ad.offer.guests === Number(filter) || filter === 'any'
     );
   });
 };
@@ -44,7 +45,7 @@ const setfeaturesFilter = (filterElement, mapEntries) => {
   const filter = filterElement.value;
   mapEntries.forEach((entry) => {
     entry.filters[filter] = filterElement.checked
-      ? !entry.data.offer.features.includes(filter)
+      ? !entry.ad.offer.features.includes(filter)
       : false;
   });
 };
@@ -55,12 +56,25 @@ const runFilter = (map, mapEntries) => {
     if (filters.includes(true)) {
       removeFromMap(map, entry.marker);
     } else {
-      putToMap(entry.data, map, entry.marker);
+      putToMap(entry.ad, map, entry.marker);
     }
   });
 };
 
-export const setFilters = (filtersFormElements, map, mapEntries) => {
+export const addFiltration = () => ({
+  type: false,
+  price: false,
+  rooms: false,
+  capacity: false,
+  wifi: false,
+  dishwasher: false,
+  parking: false,
+  washer: false,
+  elevator: false,
+  conditioner: false,
+});
+
+export const setFilters = (map, mapEntries) => {
   const {
     form,
     type,
@@ -74,6 +88,7 @@ export const setFilters = (filtersFormElements, map, mapEntries) => {
     elevator,
     conditioner,
   } = filtersFormElements;
+
   form.addEventListener('change', (evt) => {
     switch (evt.target) {
       case type:

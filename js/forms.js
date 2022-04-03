@@ -1,4 +1,4 @@
-import { MAP_DIGIT, getMinPrice } from './init.js';
+import { MAP_DIGIT, getMinPrice } from './util.js';
 
 /**
  * Функция возвращает callback-функцию
@@ -17,18 +17,14 @@ const switchChildren = (form, useMethod) => {
   [...form.elements].forEach(useMethod);
 };
 
-export const disableForms = (forms) => {
-  forms.forEach((form) => {
-    form.classList.add('ad-form--disabled');
-    switchChildren(form, switchTo('setAttribute'));
-  });
+export const disableForm = (form) => {
+  form.classList.add('ad-form--disabled');
+  switchChildren(form, switchTo('setAttribute'));
 };
 
-export const enableForms = (forms) => {
-  forms.forEach((form) => {
-    form.classList.remove('ad-form--disabled');
-    switchChildren(form, switchTo('removeAttribute'));
-  });
+export const enableForm = (form) => {
+  form.classList.remove('ad-form--disabled');
+  switchChildren(form, switchTo('removeAttribute'));
 };
 
 export const hideElement = (element) => {

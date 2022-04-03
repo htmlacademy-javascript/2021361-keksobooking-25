@@ -13,7 +13,7 @@ const cardTemplate = document
   .content.querySelector('.popup');
 
 const setTitle = (offer, title) => {
-  if (offer.title.length === 0) {
+  if (offer.title === undefined || offer.title.length === 0) {
     hideElement(title);
     return;
   }
@@ -22,7 +22,7 @@ const setTitle = (offer, title) => {
 };
 
 const setAddress = (offer, address) => {
-  if (offer.address.length === 0) {
+  if (offer.address === undefined || offer.address.length === 0) {
     hideElement(address);
     return;
   }
@@ -31,7 +31,7 @@ const setAddress = (offer, address) => {
 };
 
 const setPrice = (offer, price) => {
-  if (offer.price === 0) {
+  if (offer.price === undefined || offer.price === 0) {
     hideElement(price);
     return;
   }
@@ -40,7 +40,7 @@ const setPrice = (offer, price) => {
 };
 
 const setType = (offer, type) => {
-  if (offer.type.length === 0) {
+  if (offer.type === undefined || offer.type.length === 0) {
     hideElement(type);
     return;
   }
@@ -49,16 +49,41 @@ const setType = (offer, type) => {
 };
 
 const setCapacity = (offer, capacity) => {
-  if (offer.rooms.length === 0 || offer.guests.length === 0) {
+  if (
+    offer.rooms === undefined ||
+    offer.guests === undefined ||
+    offer.rooms.length === 0 ||
+    offer.guests.length === 0
+  ) {
     hideElement(capacity);
     return;
   }
 
-  capacity.textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
+  const guestsString = String(offer.rooms);
+  const guestsLastDigit = Number(guestsString.slice(-1));
+  let guests = 'гостя';
+  if (offer.guests === 11 || (offer.guests > 1 && guestsLastDigit !== 1)) {
+    guests = 'гостей';
+  }
+
+  const roomsString = String(offer.rooms);
+  const roomsLastDigit = Number(roomsString.slice(-1));
+  let rooms = 'комната';
+  if (offer.rooms > 4 && (roomsLastDigit === 0 || roomsLastDigit > 4)) {
+    rooms = 'комнат';
+  } else if (roomsLastDigit > 1 && roomsLastDigit <= 4) {
+    rooms = 'комнаты';
+  }
+  capacity.textContent = `${offer.rooms} ${rooms} для ${offer.guests} ${guests}`;
 };
 
 const setTime = (offer, time) => {
-  if (offer.checkin.length === 0 || offer.checkout.length === 0) {
+  if (
+    offer.checkin === undefined ||
+    offer.checkout === undefined ||
+    offer.checkin.length === 0 ||
+    offer.checkout.length === 0
+  ) {
     hideElement(time);
     return;
   }
@@ -66,9 +91,10 @@ const setTime = (offer, time) => {
   time.textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
 };
 
-const setFeatures = (offer, features) => {
-  if (offer.features.length === 0) {
-    hideElement(features);
+const setFeatures = (offer, featuresList, features) => {
+  if (offer.features === undefined || offer.features.length === 0) {
+    offer.features = [];
+    hideElement(featuresList);
     return;
   }
 
@@ -84,7 +110,7 @@ const setFeatures = (offer, features) => {
 };
 
 const setDescription = (offer, description) => {
-  if (offer.description.length === 0) {
+  if (offer.description === undefined || offer.description.length === 0) {
     hideElement(description);
     return;
   }
@@ -93,7 +119,8 @@ const setDescription = (offer, description) => {
 };
 
 const setPhotos = (offer, photos) => {
-  if (offer.photos.length === 0) {
+  if (offer.photos === undefined || offer.photos.length === 0) {
+    offer.photos = [];
     hideElement(photos);
     return;
   }
@@ -108,7 +135,7 @@ const setPhotos = (offer, photos) => {
 };
 
 const setAvatar = (author, img) => {
-  if (author.avatar.length === 0) {
+  if (author.avatar === undefined || author.avatar.length === 0) {
     hideElement(img);
     return;
   }
@@ -133,7 +160,11 @@ const fillTemplate = (obj) => {
 
   setTime(offer, newCard.querySelector('.popup__text--time'));
 
-  setFeatures(offer, newCard.querySelectorAll('.popup__feature'));
+  setFeatures(
+    offer,
+    newCard.querySelector('.popup__features'),
+    newCard.querySelectorAll('.popup__feature')
+  );
 
   setDescription(offer, newCard.querySelector('.popup__description'));
 

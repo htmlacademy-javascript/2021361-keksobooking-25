@@ -1,12 +1,13 @@
 import { setAddress } from './forms.js';
-import { MAX_MAP_ENTRIES, MAIN_ICON_SIZE, ICON_SIZE } from './init.js';
+import { MAIN_ICON_SIZE, ICON_SIZE, MAX_MAP_ENTRIES } from './util.js';
 import { getCardTemplate } from './templates.js';
+import { addFiltration } from './filters.js';
 
 export const getMarker = (lat, lng) => {
   const icon = L.icon({
     iconUrl: 'img/pin.svg',
     iconSize: [ICON_SIZE, ICON_SIZE],
-    iconAnchor: [ICON_SIZE/2, ICON_SIZE],
+    iconAnchor: [ICON_SIZE / 2, ICON_SIZE],
   });
 
   const marker = L.marker([lat, lng], {
@@ -40,7 +41,7 @@ export const createMap = (mapSettings, enableForms, adFormElements) => {
   const mainIcon = L.icon({
     iconUrl: 'img/main-pin.svg',
     iconSize: [MAIN_ICON_SIZE, MAIN_ICON_SIZE],
-    iconAnchor: [MAIN_ICON_SIZE/2, MAIN_ICON_SIZE],
+    iconAnchor: [MAIN_ICON_SIZE / 2, MAIN_ICON_SIZE],
   });
 
   const mainMarker = L.marker([lat, lng], {
@@ -60,17 +61,19 @@ export const createMap = (mapSettings, enableForms, adFormElements) => {
   return map;
 };
 
-export const getMapEntries = (map, demoObjects, dataFilters) => {
+export const setMapEntries = (data, map) => {
   const mapEntries = [];
-  demoObjects.forEach((demoObject, index) => {
-    if (index < MAX_MAP_ENTRIES) {
-      const lat = demoObject.location.lat;
-      const lng = demoObject.location.lng;
-      const marker = getMarker(lat, lng);
-      putToMap(demoObject, map, marker);
-      mapEntries.push({ data: demoObject, marker, filters: Object.assign({}, dataFilters)});
-    }
+  const ads = data.slice(0, MAX_MAP_ENTRIES);
+  ads.forEach((ad) => {
+    const lat = ad.location.lat;
+    const lng = ad.location.lng;
+    const marker = getMarker(lat, lng);
+    putToMap(ad, map, marker);
+    mapEntries.push({
+      ad,
+      marker,
+      filters: addFiltration(),
+    });
   });
-
   return mapEntries;
 };
