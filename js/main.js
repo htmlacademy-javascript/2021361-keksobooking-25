@@ -1,4 +1,4 @@
-import { getSimilarAds } from './server.js';
+import { server } from './server.js';
 import { createMap, setMapEntries } from './map.js';
 import { setValidateAdForm } from './validate.js';
 import { createSlider } from './slider.js';
@@ -15,12 +15,13 @@ import {
 
 disableForm(adForm);
 disableForm(filtersForm);
-initAdForm(adFormElements);
+const mapWhenReady = () => enableForm(adForm);
+const mapObject = createMap(mapSettings, mapWhenReady, adFormElements);
+initAdForm(adFormElements, mapObject);
 setValidateAdForm(adFormElements);
 createSlider(adFormElements);
-const mapWhenReady = () => enableForm(adForm);
-const map = createMap(mapSettings, mapWhenReady, adFormElements);
-const whenGetResponse = getSimilarAds();
+
+const whenGetResponse = server.getSimilarAds();
 whenGetResponse
   .then((response) => {
     if (response.ok) {
@@ -29,8 +30,8 @@ whenGetResponse
     throw new Error(`${response.status} ${response.statusText}`);
   })
   .then((data) => {
-    const mapEntries = setMapEntries(data, map);
-    setFilters(map, mapEntries);
+    setMapEntries(data, mapObject);
+    setFilters(mapObject);
     enableForm(filtersForm);
   })
   .catch((error) => {

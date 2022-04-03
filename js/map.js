@@ -3,6 +3,13 @@ import { MAIN_ICON_SIZE, ICON_SIZE, MAX_MAP_ENTRIES } from './util.js';
 import { getCardTemplate } from './templates.js';
 import { addFiltration } from './filters.js';
 
+export const resetMainMarker = (mapObject) => {
+  const { map, mainMarker, settings } = mapObject;
+  const { lat, lng, scale } = settings;
+  map.setView([lat, lng], scale);
+  mainMarker.setLatLng([lat, lng]);
+};
+
 export const getMarker = (lat, lng) => {
   const icon = L.icon({
     iconUrl: 'img/pin.svg',
@@ -26,12 +33,10 @@ export const removeFromMap = (map, marker) => {
   marker.remove(map);
 };
 
-export const createMap = (mapSettings, enableForms, adFormElements) => {
+export const createMap = (mapSettings, enableAdForm, adFormElements) => {
   const { lat, lng, scale } = mapSettings;
   const { mapCanvas } = adFormElements;
-  const map = L.map(mapCanvas)
-    .setView([lat, lng], scale)
-    .whenReady(enableForms);
+  const map = L.map(mapCanvas).setView([lat, lng], scale);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution:
@@ -49,31 +54,32 @@ export const createMap = (mapSettings, enableForms, adFormElements) => {
     icon: mainIcon,
   }).addTo(map);
 
-  setAddress(mapSettings, adFormElements);
+  setAddress(lat, lng, adFormElements);
 
   mainMarker.on('moveend', (evt) => {
     const latLng = evt.target.getLatLng();
-    mapSettings.lat = latLng.lat;
-    mapSettings.lng = latLng.lng;
-    setAddress(mapSettings, adFormElements);
+    setAddress(latLng.lat, latLng.lng, adFormElements);
   });
 
-  return map;
+  map.whenReady(enableAdForm);
+
+  return { map, mainMarker, settings: mapSettings };
 };
 
-export const setMapEntries = (data, map) => {
-  const mapEntries = [];
+export const setMapEntries = (data, mapObject) => {
+  const map = mapObject.map;
+  const entries = [];
   const ads = data.slice(0, MAX_MAP_ENTRIES);
   ads.forEach((ad) => {
     const lat = ad.location.lat;
     const lng = ad.location.lng;
     const marker = getMarker(lat, lng);
     putToMap(ad, map, marker);
-    mapEntries.push({
+    entries.push({
       ad,
       marker,
       filters: addFiltration(),
     });
   });
-  return mapEntries;
+  mapObject.entries = entries;
 };

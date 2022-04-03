@@ -29,6 +29,23 @@ export const getMinPrice = (type) => {
   return { price, placeholder };
 };
 
+export const adForm = document.querySelector('.ad-form');
+
+export const adFormElements = {
+  form: adForm,
+  rooms: adForm.querySelector('#room_number'),
+  capacity: adForm.querySelector('#capacity'),
+  type: adForm.querySelector('#type'),
+  price: adForm.querySelector('#price'),
+  timein: adForm.querySelector('#timein'),
+  timeout: adForm.querySelector('#timeout'),
+  address: adForm.querySelector('#address'),
+  slider: adForm.querySelector('#slider'),
+  mapCanvas: document.querySelector('#map-canvas'),
+  resetBtn: document.querySelector('.ad-form__reset'),
+  title: adForm.querySelector('#title'),
+};
+
 export const filtersForm = document.querySelector('.map__filters');
 
 export const filtersFormElements = {
@@ -67,19 +84,3 @@ export const showMessage = (msgKey, msgText) => {
   document.body.append(message);
   setTimeout(() => message.remove(), MESSAGE_SHOW_TIME);
 };
-
-export const adForm = document.querySelector('.ad-form');
-
-export const adFormElements = {
-  form: adForm,
-  rooms: adForm.querySelector('#room_number'),
-  capacity: adForm.querySelector('#capacity'),
-  type: adForm.querySelector('#type'),
-  price: adForm.querySelector('#price'),
-  timein: adForm.querySelector('#timein'),
-  timeout: adForm.querySelector('#timeout'),
-  address: adForm.querySelector('#address'),
-  slider: adForm.querySelector('#slider'),
-  mapCanvas: document.querySelector('#map-canvas'),
-};
-

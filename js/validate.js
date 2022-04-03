@@ -4,7 +4,7 @@ import { DECIMAL, NOT_FOR_GUESTS, getMinPrice } from './util.js';
  * Функция обновляет (очищает) содержимое сообщений об ошибках
  * @param {Array} elements - элементы input, которые добавляются в pristine
  */
-const clearErrorTextTag = (...elements) => {
+export const clearErrorTextTag = (...elements) => {
   const errorTextTags = [];
   elements.forEach((element) =>
     errorTextTags.push(element.parentElement.querySelector('.form__error'))

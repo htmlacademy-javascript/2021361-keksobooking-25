@@ -10,9 +10,7 @@ const priceRange = {
 
 const setTypeFilter = (filter, mapEntries) => {
   mapEntries.forEach((entry) => {
-    entry.filters.type = !(
-      entry.ad.offer.type === filter || filter === 'any'
-    );
+    entry.filters.type = !(entry.ad.offer.type === filter || filter === 'any');
   });
 };
 
@@ -74,7 +72,7 @@ export const addFiltration = () => ({
   conditioner: false,
 });
 
-export const setFilters = (map, mapEntries) => {
+export const setFilters = (mapObject) => {
   const {
     form,
     type,
@@ -89,19 +87,21 @@ export const setFilters = (map, mapEntries) => {
     conditioner,
   } = filtersFormElements;
 
+  const { map, entries } = mapObject;
+
   form.addEventListener('change', (evt) => {
     switch (evt.target) {
       case type:
-        setTypeFilter(evt.target.value, mapEntries);
+        setTypeFilter(evt.target.value, entries);
         break;
       case price:
-        setPriceFilter(evt.target.value, mapEntries);
+        setPriceFilter(evt.target.value, entries);
         break;
       case rooms:
-        setRoomsFilter(evt.target.value, mapEntries);
+        setRoomsFilter(evt.target.value, entries);
         break;
       case capacity:
-        setCapacityFilter(evt.target.value, mapEntries);
+        setCapacityFilter(evt.target.value, entries);
         break;
       case wifi:
       case dishwasher:
@@ -109,9 +109,9 @@ export const setFilters = (map, mapEntries) => {
       case washer:
       case elevator:
       case conditioner:
-        setfeaturesFilter(evt.target, mapEntries);
+        setfeaturesFilter(evt.target, entries);
         break;
     }
-    runFilter(map, mapEntries);
+    runFilter(map, entries);
   });
 };
