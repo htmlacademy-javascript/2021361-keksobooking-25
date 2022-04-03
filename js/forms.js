@@ -59,10 +59,11 @@ export const setAddress = (lat, lng, adFormElements) => {
 };
 
 export const initAdForm = (adFormElements, filtersFormElements, mapObject) => {
-  const { form, type, price, rooms, capacity, resetBtn } = adFormElements;
+  const { form, type, price, rooms, capacity, resetButton } = adFormElements;
   setTimeinTimeoutSynchro(adFormElements);
   setSelectedPricePlaceholder(adFormElements);
-  resetBtn.addEventListener('click', () => {
+  resetButton.addEventListener('click', (evt) => {
+    evt.preventDefault();
     form.reset();
     setAddress(mapObject.settings.lat, mapObject.settings.lng, adFormElements);
     clearErrorTextTag(form, type, price, rooms, capacity);

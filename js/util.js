@@ -43,7 +43,8 @@ export const adFormElements = {
   timeout: adForm.querySelector('#timeout'),
   address: adForm.querySelector('#address'),
   slider: adForm.querySelector('#slider'),
-  resetBtn: document.querySelector('.ad-form__reset'),
+  resetButton: adForm.querySelector('.ad-form__reset'),
+  submitButton: adForm.querySelector('.ad-form__submit'),
   title: adForm.querySelector('#title'),
 };
 

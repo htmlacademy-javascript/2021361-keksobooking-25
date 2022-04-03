@@ -1,4 +1,11 @@
-import { DECIMAL, NOT_FOR_GUESTS, getMinPrice } from './util.js';
+import {
+  DECIMAL,
+  NOT_FOR_GUESTS,
+  getMinPrice,
+  MessageKey,
+  showMessage,
+} from './util.js';
+import { server } from './server.js';
 
 /**
  * Функция обновляет (очищает) содержимое сообщений об ошибках
@@ -32,7 +39,7 @@ export const priceDispatchEvent = (adFormElements) => {
 };
 
 export const setValidateAdForm = (adFormElements) => {
-  const { form, type, price, rooms, capacity } = adFormElements;
+  const { form, type, price, rooms, capacity, submitButton } = adFormElements;
 
   const pristine = new window.Pristine(form, {
     classTo: 'ad-form__element',
@@ -87,7 +94,23 @@ export const setValidateAdForm = (adFormElements) => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
     if (pristine.validate()) {
-      form.submit();
+      submitButton.disabled = true;
+      const whenwhenGetResponse = server.pushNewAd(evt.target);
+      whenwhenGetResponse
+        .then((response) => {
+          if (response.ok) {
+            showMessage(
+              MessageKey.SUCCESS,
+              'Данные успешно отправлены на сервер'
+            );
+            submitButton.disabled = false;
+            return;
+          }
+          throw new Error(`${response.status} ${response.statusText}`);
+        })
+        .catch((error) => {
+          showMessage(MessageKey.ALERT, error.message);
+        });
     }
   });
 };
