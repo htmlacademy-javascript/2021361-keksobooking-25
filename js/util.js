@@ -31,6 +31,8 @@ export const getMinPrice = (type) => {
 
 export const adForm = document.querySelector('.ad-form');
 
+export const mapCanvas = document.querySelector('#map-canvas');
+
 export const adFormElements = {
   form: adForm,
   rooms: adForm.querySelector('#room_number'),
@@ -41,7 +43,6 @@ export const adFormElements = {
   timeout: adForm.querySelector('#timeout'),
   address: adForm.querySelector('#address'),
   slider: adForm.querySelector('#slider'),
-  mapCanvas: document.querySelector('#map-canvas'),
   resetBtn: document.querySelector('.ad-form__reset'),
   title: adForm.querySelector('#title'),
 };

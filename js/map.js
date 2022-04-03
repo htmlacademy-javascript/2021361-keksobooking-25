@@ -24,18 +24,22 @@ export const getMarker = (lat, lng) => {
   return marker;
 };
 
-export const putToMap = (demoObject, map, marker) => {
+export const putToMap = (ad, map, marker) => {
   marker.addTo(map);
-  marker.bindPopup(getCardTemplate(demoObject));
+  marker.bindPopup(getCardTemplate(ad));
 };
 
 export const removeFromMap = (map, marker) => {
   marker.remove(map);
 };
 
-export const createMap = (mapSettings, enableAdForm, adFormElements) => {
+export const createMap = (
+  mapSettings,
+  enableAdForm,
+  mapCanvas,
+  adFormElements
+) => {
   const { lat, lng, scale } = mapSettings;
-  const { mapCanvas } = adFormElements;
   const map = L.map(mapCanvas).setView([lat, lng], scale);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -63,7 +67,7 @@ export const createMap = (mapSettings, enableAdForm, adFormElements) => {
 
   map.whenReady(enableAdForm);
 
-  return { map, mainMarker, settings: mapSettings };
+  return { map, mainMarker, settings: mapSettings, canvas: mapCanvas };
 };
 
 export const setMapEntries = (data, mapObject) => {

@@ -1,5 +1,4 @@
 import { putToMap, removeFromMap } from './map.js';
-import { filtersFormElements } from './util.js';
 
 const priceRange = {
   any: { min: 0, max: 100000 },
@@ -48,7 +47,7 @@ const setfeaturesFilter = (filterElement, mapEntries) => {
   });
 };
 
-const runFilter = (map, mapEntries) => {
+const runFilters = (map, mapEntries) => {
   mapEntries.forEach((entry) => {
     const filters = Object.values(entry.filters);
     if (filters.includes(true)) {
@@ -72,7 +71,7 @@ export const addFiltration = () => ({
   conditioner: false,
 });
 
-export const setFilters = (mapObject) => {
+export const setFilters = (filtersFormElements, mapObject) => {
   const {
     form,
     type,
@@ -112,6 +111,14 @@ export const setFilters = (mapObject) => {
         setfeaturesFilter(evt.target, entries);
         break;
     }
-    runFilter(map, entries);
+    runFilters(map, entries);
   });
+};
+
+export const resetFilters = (filtersFormElements, mapObject) => {
+  mapObject.entries.forEach((entry) => {
+    removeFromMap(mapObject.map, entry.marker);
+    putToMap(entry.ad, mapObject.map, entry.marker);
+  });
+  filtersFormElements.form.reset();
 };

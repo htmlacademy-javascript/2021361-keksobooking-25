@@ -5,19 +5,19 @@ import { createSlider } from './slider.js';
 import { disableForm, enableForm, initAdForm } from './forms.js';
 import { setFilters } from './filters.js';
 import {
-  adForm,
+  mapCanvas,
   adFormElements,
-  filtersForm,
+  filtersFormElements,
   mapSettings,
   MessageKey,
   showMessage,
 } from './util.js';
 
-disableForm(adForm);
-disableForm(filtersForm);
-const mapWhenReady = () => enableForm(adForm);
-const mapObject = createMap(mapSettings, mapWhenReady, adFormElements);
-initAdForm(adFormElements, mapObject);
+disableForm(adFormElements.form);
+disableForm(filtersFormElements.form);
+const mapWhenReady = () => enableForm(adFormElements.form);
+const mapObject = createMap(mapSettings, mapWhenReady, mapCanvas, adFormElements);
+initAdForm(adFormElements, filtersFormElements, mapObject);
 setValidateAdForm(adFormElements);
 createSlider(adFormElements);
 
@@ -31,8 +31,8 @@ whenGetResponse
   })
   .then((data) => {
     setMapEntries(data, mapObject);
-    setFilters(mapObject);
-    enableForm(filtersForm);
+    setFilters(filtersFormElements, mapObject);
+    enableForm(filtersFormElements.form);
   })
   .catch((error) => {
     showMessage(MessageKey.ALERT, error.message);

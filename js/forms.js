@@ -1,6 +1,7 @@
 import { MAP_DIGIT, getMinPrice } from './util.js';
-import { clearErrorTextTag, priceDispatchEvent } from './validate.js';
+import { clearErrorTextTag } from './validate.js';
 import { resetMainMarker } from './map.js';
+import { resetFilters } from './filters.js';
 
 /**
  * Функция возвращает callback-функцию
@@ -57,7 +58,7 @@ export const setAddress = (lat, lng, adFormElements) => {
   address.value = `${lat.toFixed(MAP_DIGIT)}, ${lng.toFixed(MAP_DIGIT)}`;
 };
 
-export const initAdForm = (adFormElements, mapObject) => {
+export const initAdForm = (adFormElements, filtersFormElements, mapObject) => {
   const { form, type, price, rooms, capacity, resetBtn } = adFormElements;
   setTimeinTimeoutSynchro(adFormElements);
   setSelectedPricePlaceholder(adFormElements);
@@ -66,5 +67,6 @@ export const initAdForm = (adFormElements, mapObject) => {
     setAddress(mapObject.settings.lat, mapObject.settings.lng, adFormElements);
     clearErrorTextTag(form, type, price, rooms, capacity);
     resetMainMarker(mapObject);
+    resetFilters(filtersFormElements, mapObject);
   });
 };
