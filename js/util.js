@@ -10,6 +10,14 @@ export const MAIN_ICON_SIZE = 52;
 
 export const ICON_SIZE = 40;
 
+export const OBJECTS_TYPES = {
+  palace: 'Дворец',
+  flat: 'Квартира',
+  house: 'Дом',
+  bungalow: 'Бунгало',
+  hotel: 'Отель',
+};
+
 export const mapSettings = {
   lat: 35.684835,
   lng: 139.752482,
@@ -64,17 +72,12 @@ export const filtersFormElements = {
   conditioner: filtersForm.querySelector('#filter-conditioner'),
 };
 
-export const MessageKey = {
-  ALERT: 'FireBrick',
-  SUCCESS: 'SpringGreen',
-};
-
 export const MESSAGE_SHOW_TIME = 5000;
 
-export const showMessage = (msgKey, msgText) => {
+export const showMessage = (msgText) => {
   const message = document.createElement('div');
   message.textContent = msgText;
-  message.style.backgroundColor = msgKey;
+  message.style.backgroundColor = 'FireBrick';
   message.style.zIndex = 100;
   message.style.position = 'absolute';
   message.style.left = 0;
@@ -86,3 +89,4 @@ export const showMessage = (msgKey, msgText) => {
   document.body.append(message);
   setTimeout(() => message.remove(), MESSAGE_SHOW_TIME);
 };
+

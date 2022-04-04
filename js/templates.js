@@ -1,16 +1,21 @@
 import { hideElement } from './forms.js';
+import { OBJECTS_TYPES } from './util.js';
 
-const OBJECTS_TYPES = {
-  palace: 'Дворец',
-  flat: 'Квартира',
-  house: 'Дом',
-  bungalow: 'Бунгало',
-  hotel: 'Отель',
-};
+const bodyElement = document.querySelector('body');
 
 const cardTemplate = document
   .querySelector('#card')
   .content.querySelector('.popup');
+
+const successMessage = document
+  .querySelector('#success')
+  .content.querySelector('.success')
+  .cloneNode(true);
+
+const errorMessage = document
+  .querySelector('#error')
+  .content.querySelector('.error')
+  .cloneNode(true);
 
 const setTitle = (offer, title) => {
   if (offer.title === undefined || offer.title.length === 0) {
@@ -143,7 +148,7 @@ const setAvatar = (author, img) => {
   img.src = author.avatar;
 };
 
-const fillTemplate = (obj) => {
+export const getCardTemplate = (obj) => {
   const { author, offer } = obj;
 
   const newCard = cardTemplate.cloneNode(true);
@@ -175,4 +180,39 @@ const fillTemplate = (obj) => {
   return newCard;
 };
 
-export const getCardTemplate = (obj) => fillTemplate(obj);
+const deletesMessageWhenClick = (evt) => {
+  evt.target.removeEventListener('click', deletesMessageWhenClick);
+  document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+  evt.target.remove();
+};
+
+const deletesMessageWhenEscape = (evt) => {
+  if (evt.key === 'Escape') {
+    document.removeEventListener('keydown', deletesMessageWhenEscape);
+    const messagesClasses = ['success', 'error'];
+    messagesClasses.forEach((messageClass) => {
+      const element = document.querySelector(`.${messageClass}`);
+      if (element !== null) {
+        evt.target.removeEventListener('click', deletesMessageWhenClick);
+        element.remove();
+      }
+    });
+  }
+};
+
+export const showSuccessMessage = () => {
+  const message = successMessage.cloneNode(true);
+  bodyElement.appendChild(message);
+  document.addEventListener('keydown', deletesMessageWhenEscape);
+  message.addEventListener('click', deletesMessageWhenClick);
+};
+
+export const showErrorMessage = () => {
+  const message = errorMessage.cloneNode(true);
+  bodyElement.appendChild(message);
+  document.addEventListener('keydown', deletesMessageWhenEscape);
+  message.addEventListener('click', deletesMessageWhenClick);
+  message
+    .querySelector('.error__button')
+    .addEventListener('click', deletesMessageWhenClick);
+};

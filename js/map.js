@@ -3,11 +3,12 @@ import { MAIN_ICON_SIZE, ICON_SIZE, MAX_MAP_ENTRIES } from './util.js';
 import { getCardTemplate } from './templates.js';
 import { addFiltration } from './filters.js';
 
-export const resetMainMarker = (mapObject) => {
+export const resetMainMarker = (mapObject, adFormElements) => {
   const { map, mainMarker, settings } = mapObject;
   const { lat, lng, scale } = settings;
   map.setView([lat, lng], scale);
   mainMarker.setLatLng([lat, lng]);
+  setAddress(lat, lng, adFormElements);
 };
 
 export const getMarker = (lat, lng) => {

@@ -9,7 +9,6 @@ import {
   adFormElements,
   filtersFormElements,
   mapSettings,
-  MessageKey,
   showMessage,
 } from './util.js';
 
@@ -18,7 +17,7 @@ disableForm(filtersFormElements.form);
 const mapWhenReady = () => enableForm(adFormElements.form);
 const mapObject = createMap(mapSettings, mapWhenReady, mapCanvas, adFormElements);
 initAdForm(adFormElements, filtersFormElements, mapObject);
-setValidateAdForm(adFormElements);
+setValidateAdForm(adFormElements, filtersFormElements, mapObject);
 createSlider(adFormElements);
 
 const whenGetResponse = server.getSimilarAds();
@@ -35,5 +34,5 @@ whenGetResponse
     enableForm(filtersFormElements.form);
   })
   .catch((error) => {
-    showMessage(MessageKey.ALERT, error.message);
+    showMessage(error.message);
   });

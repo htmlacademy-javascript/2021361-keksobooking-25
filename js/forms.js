@@ -58,16 +58,21 @@ export const setAddress = (lat, lng, adFormElements) => {
   address.value = `${lat.toFixed(MAP_DIGIT)}, ${lng.toFixed(MAP_DIGIT)}`;
 };
 
+export const resetAdForm = (adFormElements, filtersFormElements, mapObject) => {
+  const { form, type, price, rooms, capacity, slider } = adFormElements;
+  form.reset();
+  clearErrorTextTag(form, type, price, rooms, capacity);
+  slider.noUiSlider.reset();
+  resetMainMarker(mapObject, adFormElements);
+  resetFilters(filtersFormElements, mapObject);
+};
+
 export const initAdForm = (adFormElements, filtersFormElements, mapObject) => {
-  const { form, type, price, rooms, capacity, resetButton } = adFormElements;
+  const { resetButton } = adFormElements;
   setTimeinTimeoutSynchro(adFormElements);
   setSelectedPricePlaceholder(adFormElements);
   resetButton.addEventListener('click', (evt) => {
     evt.preventDefault();
-    form.reset();
-    setAddress(mapObject.settings.lat, mapObject.settings.lng, adFormElements);
-    clearErrorTextTag(form, type, price, rooms, capacity);
-    resetMainMarker(mapObject);
-    resetFilters(filtersFormElements, mapObject);
+    resetAdForm(adFormElements, filtersFormElements, mapObject);
   });
 };

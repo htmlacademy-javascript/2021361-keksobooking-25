@@ -1,11 +1,7 @@
-import {
-  DECIMAL,
-  NOT_FOR_GUESTS,
-  getMinPrice,
-  MessageKey,
-  showMessage,
-} from './util.js';
+import { DECIMAL, NOT_FOR_GUESTS, getMinPrice } from './util.js';
 import { server } from './server.js';
+import { resetAdForm } from './forms.js';
+import { showSuccessMessage, showErrorMessage } from './templates.js';
 
 /**
  * Функция обновляет (очищает) содержимое сообщений об ошибках
@@ -38,7 +34,11 @@ export const priceDispatchEvent = (adFormElements) => {
   price.placeholder = getMinPrice(type[type.selectedIndex].value).placeholder;
 };
 
-export const setValidateAdForm = (adFormElements) => {
+export const setValidateAdForm = (
+  adFormElements,
+  filtersFormElements,
+  mapObject
+) => {
   const { form, type, price, rooms, capacity, submitButton } = adFormElements;
 
   const pristine = new window.Pristine(form, {
@@ -95,21 +95,20 @@ export const setValidateAdForm = (adFormElements) => {
     evt.preventDefault();
     if (pristine.validate()) {
       submitButton.disabled = true;
-      const whenwhenGetResponse = server.pushNewAd(evt.target);
-      whenwhenGetResponse
+      const whenGetResponse = server.pushNewAd(evt.target);
+      whenGetResponse
         .then((response) => {
           if (response.ok) {
-            showMessage(
-              MessageKey.SUCCESS,
-              'Данные успешно отправлены на сервер'
-            );
+            showSuccessMessage();
+            resetAdForm(adFormElements, filtersFormElements, mapObject);
             submitButton.disabled = false;
             return;
           }
           throw new Error(`${response.status} ${response.statusText}`);
         })
-        .catch((error) => {
-          showMessage(MessageKey.ALERT, error.message);
+        .catch(() => {
+          showErrorMessage();
+          submitButton.disabled = false;
         });
     }
   });
