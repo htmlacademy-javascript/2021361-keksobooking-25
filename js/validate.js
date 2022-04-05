@@ -1,10 +1,13 @@
-import { DECIMAL, NOT_FOR_GUESTS, getMinPrice } from './data.js';
+import { DECIMAL, NOT_FOR_GUESTS, getMinPrice } from './util.js';
+import { server } from './server.js';
+import { resetAdForm } from './forms.js';
+import { showSuccessMessage, showErrorMessage } from './templates.js';
 
 /**
  * Функция обновляет (очищает) содержимое сообщений об ошибках
  * @param {Array} elements - элементы input, которые добавляются в pristine
  */
-const clearErrorTextTag = (...elements) => {
+export const clearErrorTextTag = (...elements) => {
   const errorTextTags = [];
   elements.forEach((element) =>
     errorTextTags.push(element.parentElement.querySelector('.form__error'))
@@ -31,8 +34,12 @@ export const priceDispatchEvent = (adFormElements) => {
   price.placeholder = getMinPrice(type[type.selectedIndex].value).placeholder;
 };
 
-export const setValidateAdForm = (adFormElements) => {
-  const { form, type, price, rooms, capacity } = adFormElements;
+export const setValidateAdForm = (
+  adFormElements,
+  filtersFormElements,
+  mapObject
+) => {
+  const { form, type, price, rooms, capacity, submitButton } = adFormElements;
 
   const pristine = new window.Pristine(form, {
     classTo: 'ad-form__element',
@@ -45,7 +52,7 @@ export const setValidateAdForm = (adFormElements) => {
 
   const getPriceValidate = () => {
     const currentType = type[type.selectedIndex].value;
-    const minPrice = getMinPrice(currentType).value;
+    const minPrice = getMinPrice(currentType).price;
     const currentPrice = parseInt(price.value, DECIMAL);
     return currentPrice >= minPrice;
   };
@@ -62,7 +69,7 @@ export const setValidateAdForm = (adFormElements) => {
   };
 
   const getPriceErrorMessage = () =>
-    `Минимальная цена от ${getMinPrice(type[type.selectedIndex].value).value} `;
+    `Минимальная цена от ${getMinPrice(type[type.selectedIndex].value).price} `;
 
   const getRoomsOrCapacityErrorMessage = () => 'Неверное значение';
 
@@ -87,7 +94,22 @@ export const setValidateAdForm = (adFormElements) => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
     if (pristine.validate()) {
-      form.submit();
+      submitButton.disabled = true;
+      const whenGetResponse = server.pushNewAd(evt.target);
+      whenGetResponse
+        .then((response) => {
+          if (response.ok) {
+            showSuccessMessage();
+            resetAdForm(adFormElements, filtersFormElements, mapObject);
+            submitButton.disabled = false;
+            return;
+          }
+          throw new Error(`${response.status} ${response.statusText}`);
+        })
+        .catch(() => {
+          showErrorMessage();
+          submitButton.disabled = false;
+        });
     }
   });
 };

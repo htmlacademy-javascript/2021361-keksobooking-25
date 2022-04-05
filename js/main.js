@@ -1,79 +1,38 @@
-import { createDemoObject } from './data.js';
-
-import { createMap, getMapEntries } from './map.js';
-
+import { server } from './server.js';
+import { createMap, setMapEntries } from './map.js';
 import { setValidateAdForm } from './validate.js';
-
 import { createSlider } from './slider.js';
-
+import { disableForm, enableForm, initAdForm } from './forms.js';
 import { setFilters } from './filters.js';
-
 import {
-  disableForms,
-  enableForms,
-  setSelectedPricePlaceholder,
-  setTimeinTimeoutSynchro,
-} from './forms.js';
+  mapCanvas,
+  adFormElements,
+  filtersFormElements,
+  mapSettings,
+  showMessage,
+} from './util.js';
 
-const forms = [...document.forms];
-
-const demoObjects = Array.from({ length: 10 }, createDemoObject);
-
-const adForm = document.querySelector('.ad-form');
-
-const adFormElements = {
-  form: adForm,
-  rooms: adForm.querySelector('#room_number'),
-  capacity: adForm.querySelector('#capacity'),
-  type: adForm.querySelector('#type'),
-  price: adForm.querySelector('#price'),
-  timein: adForm.querySelector('#timein'),
-  timeout: adForm.querySelector('#timeout'),
-  address: adForm.querySelector('#address'),
-  slider: adForm.querySelector('#slider'),
-  mapCanvas: document.querySelector('#map-canvas'),
-};
-
-const mapSettings = {
-  lat: 35.684835,
-  lng: 139.752482,
-  scale: 12,
-};
-
-const filtersForm = document.querySelector('.map__filters');
-
-const filtersFormElements = {
-  form: filtersForm,
-  type: filtersForm.querySelector('#housing-type'),
-  price: filtersForm.querySelector('#housing-price'),
-  rooms: filtersForm.querySelector('#housing-rooms'),
-  capacity: filtersForm.querySelector('#housing-guests'),
-  wifi: filtersForm.querySelector('#filter-wifi'),
-  dishwasher: filtersForm.querySelector('#filter-dishwasher'),
-  parking: filtersForm.querySelector('#filter-parking'),
-  washer: filtersForm.querySelector('#filter-washer'),
-  elevator: filtersForm.querySelector('#filter-elevator'),
-  conditioner: filtersForm.querySelector('#filter-conditioner'),
-};
-
-disableForms(forms);
-
-setSelectedPricePlaceholder(adFormElements);
-
-setTimeinTimeoutSynchro(adFormElements);
-
-setValidateAdForm(adFormElements);
-
+disableForm(adFormElements.form);
+disableForm(filtersFormElements.form);
+const mapWhenReady = () => enableForm(adFormElements.form);
+const mapObject = createMap(mapSettings, mapWhenReady, mapCanvas, adFormElements);
+initAdForm(adFormElements, filtersFormElements, mapObject);
+setValidateAdForm(adFormElements, filtersFormElements, mapObject);
 createSlider(adFormElements);
 
-const mapWhenReady = () => enableForms(forms);
-
-const map = createMap(mapSettings, mapWhenReady, adFormElements);
-
-const filter = Object.fromEntries(
-  Object.entries(filtersFormElements).map(([key]) => [key, false])
-);
-
-const mapEntries = getMapEntries(map, demoObjects, filter);
-
-setFilters(filtersFormElements, map, mapEntries);
+const whenGetResponse = server.getSimilarAds();
+whenGetResponse
+  .then((response) => {
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error(`${response.status} ${response.statusText}`);
+  })
+  .then((data) => {
+    setMapEntries(data, mapObject);
+    setFilters(filtersFormElements, mapObject);
+    enableForm(filtersFormElements.form);
+  })
+  .catch((error) => {
+    showMessage(error.message);
+  });

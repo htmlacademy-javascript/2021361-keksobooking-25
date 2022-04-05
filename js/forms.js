@@ -1,4 +1,7 @@
-import { MAP_DIGIT, getMinPrice } from './data.js';
+import { MAP_DIGIT, getMinPrice } from './util.js';
+import { clearErrorTextTag } from './validate.js';
+import { resetMainMarker } from './map.js';
+import { resetFilters } from './filters.js';
 
 /**
  * Функция возвращает callback-функцию
@@ -17,30 +20,26 @@ const switchChildren = (form, useMethod) => {
   [...form.elements].forEach(useMethod);
 };
 
-export const disableForms = (forms) => {
-  forms.forEach((form) => {
-    form.classList.add('ad-form--disabled');
-    switchChildren(form, switchTo('setAttribute'));
-  });
+export const disableForm = (form) => {
+  form.classList.add('ad-form--disabled');
+  switchChildren(form, switchTo('setAttribute'));
 };
 
-export const enableForms = (forms) => {
-  forms.forEach((form) => {
-    form.classList.remove('ad-form--disabled');
-    switchChildren(form, switchTo('removeAttribute'));
-  });
+export const enableForm = (form) => {
+  form.classList.remove('ad-form--disabled');
+  switchChildren(form, switchTo('removeAttribute'));
 };
 
 export const hideElement = (element) => {
   element.classList.add('visually-hidden');
 };
 
-export const setSelectedPricePlaceholder = (adFormElements) => {
+const setSelectedPricePlaceholder = (adFormElements) => {
   const { price, type } = adFormElements;
   price.placeholder = getMinPrice(type[type.selectedIndex].value).placeholder;
 };
 
-export const setTimeinTimeoutSynchro = (adFormElements) => {
+const setTimeinTimeoutSynchro = (adFormElements) => {
   const { form, timeout, timein } = adFormElements;
   form.addEventListener('change', (evt) => {
     switch (evt.target) {
@@ -54,8 +53,26 @@ export const setTimeinTimeoutSynchro = (adFormElements) => {
   });
 };
 
-export const setAddress = (mapSettings, adFormElements) => {
+export const setAddress = (lat, lng, adFormElements) => {
   const { address } = adFormElements;
-  const { lat, lng } = mapSettings;
   address.value = `${lat.toFixed(MAP_DIGIT)}, ${lng.toFixed(MAP_DIGIT)}`;
+};
+
+export const resetAdForm = (adFormElements, filtersFormElements, mapObject) => {
+  const { form, type, price, rooms, capacity, slider } = adFormElements;
+  form.reset();
+  clearErrorTextTag(form, type, price, rooms, capacity);
+  slider.noUiSlider.reset();
+  resetMainMarker(mapObject, adFormElements);
+  resetFilters(filtersFormElements, mapObject);
+};
+
+export const initAdForm = (adFormElements, filtersFormElements, mapObject) => {
+  const { resetButton } = adFormElements;
+  setTimeinTimeoutSynchro(adFormElements);
+  setSelectedPricePlaceholder(adFormElements);
+  resetButton.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    resetAdForm(adFormElements, filtersFormElements, mapObject);
+  });
 };
