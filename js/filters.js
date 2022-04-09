@@ -7,7 +7,6 @@ const priceRange = {
   high: { min: 50000, max: 100000 },
 };
 
-
 const setTypeFilter = (filter, entry) => {
   entry.filters.type = !(entry.ad.offer.type === filter || filter === 'any');
 };
@@ -77,11 +76,9 @@ const runFilters = (filtersFormElements, mapObject, filter) => {
         setfeaturesFilter(filter, entry);
         break;
     }
-
+    removeFromMap(map, entry.marker);
     const filters = Object.values(entry.filters);
-    if (filters.includes(true)) {
-      removeFromMap(map, entry.marker);
-    } else {
+    if (!filters.includes(true)) {
       putToMap(entry.ad, map, entry.marker);
     }
   });
