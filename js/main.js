@@ -1,4 +1,4 @@
-import { server } from './server.js';
+import { getSimilarAds } from './server.js';
 import { createMap, setMapEntries } from './map.js';
 import { setValidateAdForm } from './validate.js';
 import { createSlider } from './slider.js';
@@ -20,8 +20,7 @@ initAdForm(adFormElements, filtersFormElements, mapObject);
 setValidateAdForm(adFormElements, filtersFormElements, mapObject);
 createSlider(adFormElements);
 
-const whenGetResponse = server.getSimilarAds();
-whenGetResponse
+getSimilarAds()
   .then((response) => {
     if (response.ok) {
       return response.json();

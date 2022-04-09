@@ -58,7 +58,7 @@ const runFilters = (map, mapEntries) => {
   });
 };
 
-export const addFiltration = () => ({
+export const createFiltration  = () => ({
   type: false,
   price: false,
   rooms: false,

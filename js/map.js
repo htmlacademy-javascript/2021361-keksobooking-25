@@ -1,7 +1,7 @@
 import { setAddress } from './forms.js';
 import { MAIN_ICON_SIZE, ICON_SIZE, MAX_MAP_ENTRIES } from './util.js';
 import { getCardTemplate } from './templates.js';
-import { addFiltration } from './filters.js';
+import { createFiltration  } from './filters.js';
 
 export const resetMainMarker = (mapObject, adFormElements) => {
   const { map, mainMarker, settings } = mapObject;
@@ -83,7 +83,7 @@ export const setMapEntries = (data, mapObject) => {
     entries.push({
       ad,
       marker,
-      filters: addFiltration(),
+      filters: createFiltration(),
     });
   });
   mapObject.entries = entries;
