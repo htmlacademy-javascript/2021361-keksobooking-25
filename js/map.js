@@ -1,5 +1,5 @@
 import { setAddress } from './forms.js';
-import { MAIN_ICON_SIZE, ICON_SIZE, MAX_MAP_ENTRIES } from './util.js';
+import { MAIN_ICON_SIZE, ICON_SIZE } from './util.js';
 import { getCardTemplate } from './templates.js';
 import { createFiltration  } from './filters.js';
 
@@ -71,10 +71,9 @@ export const createMap = (
   return { map, mainMarker, settings: mapSettings, canvas: mapCanvas };
 };
 
-export const setMapEntries = (data, mapObject) => {
+export const setMapEntries = (ads, mapObject) => {
   const map = mapObject.map;
   const entries = [];
-  const ads = data.slice(0, MAX_MAP_ENTRIES);
   ads.forEach((ad) => {
     const lat = ad.location.lat;
     const lng = ad.location.lng;

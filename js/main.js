@@ -10,6 +10,7 @@ import {
   filtersFormElements,
   mapSettings,
   showMessage,
+  MAX_MAP_ENTRIES
 } from './util.js';
 
 disableForm(adFormElements.form);
@@ -34,7 +35,7 @@ if (mapObject.map._loaded) {
       throw new Error(`${response.status} ${response.statusText}`);
     })
     .then((data) => {
-      setMapEntries(data, mapObject);
+      setMapEntries( data.slice(0, MAX_MAP_ENTRIES), mapObject);
       setFilters(filtersFormElements, mapObject);
       enableForm(filtersFormElements.form);
     })

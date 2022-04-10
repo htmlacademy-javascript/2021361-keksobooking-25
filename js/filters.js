@@ -37,6 +37,14 @@ const setfeaturesFilter = (filterElement, entry) => {
     : false;
 };
 
+function debounce(callback, timeoutDelay = 500) {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
 const runFilters = (filtersFormElements, mapObject, filter) => {
   const {
     type,
@@ -76,11 +84,14 @@ const runFilters = (filtersFormElements, mapObject, filter) => {
         setfeaturesFilter(filter, entry);
         break;
     }
-    removeFromMap(map, entry.marker);
-    const filters = Object.values(entry.filters);
-    if (!filters.includes(true)) {
-      putToMap(entry.ad, map, entry.marker);
-    }
+    const renderMarkers =debounce(() => {
+      removeFromMap(map, entry.marker);
+      const filters = Object.values(entry.filters);
+      if (!filters.includes(true)) {
+        putToMap(entry.ad, map, entry.marker);
+      }
+    });
+    renderMarkers();
   });
 };
 
