@@ -4,6 +4,7 @@ import { setValidateAdForm } from './validate.js';
 import { createSlider } from './slider.js';
 import { disableForm, enableForm, initAdForm } from './forms.js';
 import { setFilters } from './filters.js';
+import { setPhotosPreview } from './photos.js';
 import {
   mapCanvas,
   adFormElements,
@@ -15,6 +16,7 @@ import {
 
 disableForm(adFormElements.form);
 disableForm(filtersFormElements.form);
+setPhotosPreview();
 createSlider(adFormElements);
 const mapWhenReady = (mapObject) => {
   enableForm(adFormElements.form);
@@ -37,4 +39,3 @@ const mapWhenReady = (mapObject) => {
     });
 };
 createMap(mapSettings, mapWhenReady, mapCanvas, adFormElements);
-
