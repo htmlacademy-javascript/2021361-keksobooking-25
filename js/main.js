@@ -10,23 +10,16 @@ import {
   filtersFormElements,
   mapSettings,
   showMessage,
-  MAX_MAP_ENTRIES
+  MAX_MAP_ENTRIES,
 } from './util.js';
 
 disableForm(adFormElements.form);
 disableForm(filtersFormElements.form);
-const mapWhenReady = () => enableForm(adFormElements.form);
-const mapObject = createMap(
-  mapSettings,
-  mapWhenReady,
-  mapCanvas,
-  adFormElements
-);
-initAdForm(adFormElements, filtersFormElements, mapObject);
-setValidateAdForm(adFormElements, filtersFormElements, mapObject);
 createSlider(adFormElements);
-
-if (mapObject.map._loaded) {
+const mapWhenReady = (mapObject) => {
+  enableForm(adFormElements.form);
+  initAdForm(adFormElements, filtersFormElements, mapObject);
+  setValidateAdForm(adFormElements, filtersFormElements, mapObject);
   getSimilarAds()
     .then((response) => {
       if (response.ok) {
@@ -35,11 +28,13 @@ if (mapObject.map._loaded) {
       throw new Error(`${response.status} ${response.statusText}`);
     })
     .then((data) => {
-      setMapEntries( data.slice(0, MAX_MAP_ENTRIES), mapObject);
+      setMapEntries(data.slice(0, MAX_MAP_ENTRIES), mapObject);
       setFilters(filtersFormElements, mapObject);
       enableForm(filtersFormElements.form);
     })
     .catch((error) => {
       showMessage(error.message);
     });
-}
+};
+createMap(mapSettings, mapWhenReady, mapCanvas, adFormElements);
+

@@ -1,7 +1,7 @@
 import { setAddress } from './forms.js';
 import { MAIN_ICON_SIZE, ICON_SIZE } from './util.js';
 import { getCardTemplate } from './templates.js';
-import { createFiltration  } from './filters.js';
+import { createFiltration } from './filters.js';
 
 export const resetMainMarker = (mapObject, adFormElements) => {
   const { map, mainMarker, settings } = mapObject;
@@ -34,12 +34,7 @@ export const removeFromMap = (map, marker) => {
   marker.remove(map);
 };
 
-export const createMap = (
-  mapSettings,
-  enableAdForm,
-  mapCanvas,
-  adFormElements
-) => {
+export const createMap = (mapSettings, callback, mapCanvas, adFormElements) => {
   const { lat, lng, scale } = mapSettings;
   const map = L.map(mapCanvas).setView([lat, lng], scale);
 
@@ -66,9 +61,13 @@ export const createMap = (
     setAddress(latLng.lat, latLng.lng, adFormElements);
   });
 
-  map.whenReady(enableAdForm);
-
-  return { map, mainMarker, settings: mapSettings, canvas: mapCanvas };
+  const mapObject = {
+    map,
+    mainMarker,
+    settings: mapSettings,
+    canvas: mapCanvas,
+  };
+  map.whenReady(callback(mapObject));
 };
 
 export const setMapEntries = (ads, mapObject) => {
