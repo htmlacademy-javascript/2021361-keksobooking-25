@@ -7,73 +7,46 @@ const priceRange = {
   high: { min: 50000, max: 100000 },
 };
 
-const setTypeFilter = (filter, mapEntries) => {
-  mapEntries.forEach((entry) => {
-    entry.filters.type = !(entry.ad.offer.type === filter || filter === 'any');
-  });
+const setTypeFilter = (filter, entry) => {
+  entry.filters.type = !(entry.ad.offer.type === filter || filter === 'any');
 };
 
-const setPriceFilter = (filter, mapEntries) => {
+const setPriceFilter = (filter, entry) => {
   const range = priceRange[filter];
-  mapEntries.forEach((entry) => {
-    entry.filters.price = !(
-      entry.ad.offer.price >= range.min && entry.ad.offer.price < range.max
-    );
-  });
+  entry.filters.price = !(
+    entry.ad.offer.price >= range.min && entry.ad.offer.price < range.max
+  );
 };
 
-const setRoomsFilter = (filter, mapEntries) => {
-  mapEntries.forEach((entry) => {
-    entry.filters.rooms = !(
-      entry.ad.offer.rooms === Number(filter) || filter === 'any'
-    );
-  });
+const setRoomsFilter = (filter, entry) => {
+  entry.filters.rooms = !(
+    entry.ad.offer.rooms === Number(filter) || filter === 'any'
+  );
 };
 
-const setCapacityFilter = (filter, mapEntries) => {
-  mapEntries.forEach((entry) => {
-    entry.filters.capacity = !(
-      entry.ad.offer.guests === Number(filter) || filter === 'any'
-    );
-  });
+const setCapacityFilter = (filter, entry) => {
+  entry.filters.capacity = !(
+    entry.ad.offer.guests === Number(filter) || filter === 'any'
+  );
 };
 
-const setfeaturesFilter = (filterElement, mapEntries) => {
+const setfeaturesFilter = (filterElement, entry) => {
   const filter = filterElement.value;
-  mapEntries.forEach((entry) => {
-    entry.filters[filter] = filterElement.checked
-      ? !entry.ad.offer.features.includes(filter)
-      : false;
-  });
+  entry.filters[filter] = filterElement.checked
+    ? !entry.ad.offer.features.includes(filter)
+    : false;
 };
 
-const runFilters = (map, mapEntries) => {
-  mapEntries.forEach((entry) => {
-    const filters = Object.values(entry.filters);
-    if (filters.includes(true)) {
-      removeFromMap(map, entry.marker);
-    } else {
-      putToMap(entry.ad, map, entry.marker);
-    }
-  });
-};
+function debounce(callback, timeoutDelay = 500) {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
 
-export const addFiltration = () => ({
-  type: false,
-  price: false,
-  rooms: false,
-  capacity: false,
-  wifi: false,
-  dishwasher: false,
-  parking: false,
-  washer: false,
-  elevator: false,
-  conditioner: false,
-});
-
-export const setFilters = (filtersFormElements, mapObject) => {
+const runFilters = (filtersFormElements, mapObject, filter) => {
   const {
-    form,
     type,
     price,
     rooms,
@@ -88,19 +61,19 @@ export const setFilters = (filtersFormElements, mapObject) => {
 
   const { map, entries } = mapObject;
 
-  form.addEventListener('change', (evt) => {
-    switch (evt.target) {
+  entries.forEach((entry) => {
+    switch (filter) {
       case type:
-        setTypeFilter(evt.target.value, entries);
+        setTypeFilter(filter.value, entry);
         break;
       case price:
-        setPriceFilter(evt.target.value, entries);
+        setPriceFilter(filter.value, entry);
         break;
       case rooms:
-        setRoomsFilter(evt.target.value, entries);
+        setRoomsFilter(filter.value, entry);
         break;
       case capacity:
-        setCapacityFilter(evt.target.value, entries);
+        setCapacityFilter(filter.value, entry);
         break;
       case wifi:
       case dishwasher:
@@ -108,10 +81,37 @@ export const setFilters = (filtersFormElements, mapObject) => {
       case washer:
       case elevator:
       case conditioner:
-        setfeaturesFilter(evt.target, entries);
+        setfeaturesFilter(filter, entry);
         break;
     }
-    runFilters(map, entries);
+    const renderMarkers =debounce(() => {
+      removeFromMap(map, entry.marker);
+      const filters = Object.values(entry.filters);
+      if (!filters.includes(true)) {
+        putToMap(entry.ad, map, entry.marker);
+      }
+    });
+    renderMarkers();
+  });
+};
+
+export const createFiltration = () => ({
+  type: false,
+  price: false,
+  rooms: false,
+  capacity: false,
+  wifi: false,
+  dishwasher: false,
+  parking: false,
+  washer: false,
+  elevator: false,
+  conditioner: false,
+});
+
+export const setFilters = (filtersFormElements, mapObject) => {
+  const { form } = filtersFormElements;
+  form.addEventListener('change', (evt) => {
+    runFilters(filtersFormElements, mapObject, evt.target);
   });
 };
 

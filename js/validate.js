@@ -1,5 +1,5 @@
 import { DECIMAL, NOT_FOR_GUESTS, getMinPrice } from './util.js';
-import { server } from './server.js';
+import { pushNewAd } from './server.js';
 import { resetAdForm } from './forms.js';
 import { showSuccessMessage, showErrorMessage } from './templates.js';
 
@@ -95,8 +95,7 @@ export const setValidateAdForm = (
     evt.preventDefault();
     if (pristine.validate()) {
       submitButton.disabled = true;
-      const whenGetResponse = server.pushNewAd(evt.target);
-      whenGetResponse
+      pushNewAd(evt.target)
         .then((response) => {
           if (response.ok) {
             showSuccessMessage();

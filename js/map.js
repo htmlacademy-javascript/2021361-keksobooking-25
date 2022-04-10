@@ -1,7 +1,7 @@
 import { setAddress } from './forms.js';
-import { MAIN_ICON_SIZE, ICON_SIZE, MAX_MAP_ENTRIES } from './util.js';
+import { MAIN_ICON_SIZE, ICON_SIZE } from './util.js';
 import { getCardTemplate } from './templates.js';
-import { addFiltration } from './filters.js';
+import { createFiltration } from './filters.js';
 
 export const resetMainMarker = (mapObject, adFormElements) => {
   const { map, mainMarker, settings } = mapObject;
@@ -34,12 +34,7 @@ export const removeFromMap = (map, marker) => {
   marker.remove(map);
 };
 
-export const createMap = (
-  mapSettings,
-  enableAdForm,
-  mapCanvas,
-  adFormElements
-) => {
+export const createMap = (mapSettings, callback, mapCanvas, adFormElements) => {
   const { lat, lng, scale } = mapSettings;
   const map = L.map(mapCanvas).setView([lat, lng], scale);
 
@@ -66,15 +61,18 @@ export const createMap = (
     setAddress(latLng.lat, latLng.lng, adFormElements);
   });
 
-  map.whenReady(enableAdForm);
-
-  return { map, mainMarker, settings: mapSettings, canvas: mapCanvas };
+  const mapObject = {
+    map,
+    mainMarker,
+    settings: mapSettings,
+    canvas: mapCanvas,
+  };
+  map.whenReady(callback(mapObject));
 };
 
-export const setMapEntries = (data, mapObject) => {
+export const setMapEntries = (ads, mapObject) => {
   const map = mapObject.map;
   const entries = [];
-  const ads = data.slice(0, MAX_MAP_ENTRIES);
   ads.forEach((ad) => {
     const lat = ad.location.lat;
     const lng = ad.location.lng;
@@ -83,7 +81,7 @@ export const setMapEntries = (data, mapObject) => {
     entries.push({
       ad,
       marker,
-      filters: addFiltration(),
+      filters: createFiltration(),
     });
   });
   mapObject.entries = entries;
