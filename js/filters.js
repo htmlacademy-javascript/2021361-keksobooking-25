@@ -91,7 +91,7 @@ export const createFiltration = () => ({
   conditioner: false,
 });
 
-function debounce(callback, timeoutDelay = 1000) {
+function debounce(callback, timeoutDelay) {
   let timeoutId;
   return (...rest) => {
     clearTimeout(timeoutId);

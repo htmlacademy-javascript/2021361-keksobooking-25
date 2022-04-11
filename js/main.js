@@ -19,9 +19,9 @@ disableForm(filtersFormElements.form);
 setPhotosPreview();
 createSlider(adFormElements);
 const mapWhenReady = (mapObject) => {
-  enableForm(adFormElements.form);
   initAdForm(adFormElements, filtersFormElements, mapObject);
   setValidateAdForm(adFormElements, filtersFormElements, mapObject);
+  enableForm(adFormElements.form);
   getSimilarAds()
     .then((response) => {
       if (response.ok) {
@@ -29,8 +29,8 @@ const mapWhenReady = (mapObject) => {
       }
       throw new Error(`${response.status} ${response.statusText}`);
     })
-    .then((data) => {
-      setMapEntries(data.slice(0, MAX_MAP_ENTRIES), mapObject);
+    .then((adds) => {
+      setMapEntries(adds.slice(0, MAX_MAP_ENTRIES), mapObject);
       setFilters(filtersFormElements, mapObject);
       enableForm(filtersFormElements.form);
     })
