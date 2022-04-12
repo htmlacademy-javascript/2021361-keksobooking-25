@@ -54,6 +54,8 @@ export const adFormElements = {
   resetButton: adForm.querySelector('.ad-form__reset'),
   submitButton: adForm.querySelector('.ad-form__submit'),
   title: adForm.querySelector('#title'),
+  avatarPhoto: document.querySelector('.user-avatar'),
+  adPhoto: document.querySelector('img.ad-form__photo'),
 };
 
 export const filtersForm = document.querySelector('.map__filters');
@@ -89,4 +91,3 @@ export const showMessage = (msgText) => {
   document.body.append(message);
   setTimeout(() => message.remove(), MESSAGE_SHOW_TIME);
 };
-

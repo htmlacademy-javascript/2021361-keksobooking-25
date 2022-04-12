@@ -59,8 +59,11 @@ export const setAddress = (lat, lng, adFormElements) => {
 };
 
 export const resetAdForm = (adFormElements, filtersFormElements, mapObject) => {
-  const { form, type, price, rooms, capacity, slider } = adFormElements;
+  const { form, type, price, rooms, capacity, slider, avatarPhoto, adPhoto } =
+    adFormElements;
   form.reset();
+  avatarPhoto.src = 'img/muffin-grey.svg';
+  adPhoto.src = 'img/muffin-grey.svg';
   clearErrorTextTag(form, type, price, rooms, capacity);
   slider.noUiSlider.reset();
   resetMainMarker(mapObject, adFormElements);
